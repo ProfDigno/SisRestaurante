@@ -1,0 +1,11 @@
+{
+"nom_sistema":"NOMBRE EMPRESA",
+"tel_sistema":"TEL:(000)00000",
+"dir_sistema":"DIRECCION EMPRESA",
+"fecha_sis":"23-05-2021",
+"tiempo_max_emitido":"60",
+"version":"3.2",
+"user_admin":"5",
+"pass_admin":"3",
+"venta_negativo":false
+}

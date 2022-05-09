@@ -1,0 +1,30 @@
+{
+	"8C-16-45-E3-CE-6A":[
+		{
+			"nombre":"HAMBURGUS",
+			"localhost":"localhost",
+			"port":"5432",
+			"basedato":"bdrestaurante_1",
+			"usuario":"postgres",
+			"password":"4650586"
+            "direc_dump":"C:\\Program Files\\PostgreSQL\\9.5\\bin\\pg_dump.exe",
+            "direc_backup":"backup\\",
+            "nombre_backup":"bdrestaurante_",
+            "crear_backup":"NO"
+		}
+	],
+	"conn2":[
+		{
+			"nombre":"SAMU",
+			"localhost":"localhost",
+			"port":"5433",
+			"basedato":"bdsamu",
+			"usuario":"postgres",
+			"password":"4650586"
+            "direc_dump":"C:\\Program Files\\PostgreSQL\\13\\bin\\pg_dump.exe",
+            "direc_backup":"backup\\",
+            "nombre_backup":"bdpeluqueria_",
+            "crear_backup":"NO"
+		}
+	]
+}
