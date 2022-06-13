@@ -7,11 +7,13 @@ package Evento.Jtable;
 
 import Evento.Mensaje.EvenMensajeJoptionpane;
 import java.awt.Color;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JViewport;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
@@ -332,6 +334,16 @@ public class EvenJtable {
                 Doitem_subtotal = Doitem_precio * Doitem_cantidad;
                 Detabla.setValueAt(Doitem_subtotal, row, col_subtotal);
             }
+        }
+    }
+    public void alinear_derecha_columna(JTable tabla, int columna){
+        String titulo="alinear_derecha_columna";
+        try {
+            DefaultTableCellRenderer cellRenderer = new DefaultTableCellRenderer();
+            cellRenderer.setHorizontalAlignment(JLabel.RIGHT);
+            tabla.getColumnModel().getColumn(columna).setCellRenderer(cellRenderer);
+        } catch (Exception e) {
+            evmen.mensaje_error(e, titulo);
         }
     }
     // model.setValueAt(value, 1, 1);

@@ -19,6 +19,7 @@ private boolean C14es_vencido;
 private int C15numero_limite;
 private int C16dias_limite;
 private int C17numero_caja;
+private int dia_vence_resto;
 private static String nom_tabla;
 private static String nom_idtabla;
 //---------------TABLA-ID---------------
@@ -141,6 +142,15 @@ private static String nom_idtabla;
 	public void setC17numero_caja(int C17numero_caja){
 		this.C17numero_caja = C17numero_caja;
 	}
+
+    public int getDia_vence_resto() {
+        return dia_vence_resto;
+    }
+
+    public void setDia_vence_resto(int dia_vence_resto) {
+        this.dia_vence_resto = dia_vence_resto;
+    }
+        
 	public String toString() {
 		return "timbrado(" + ",idtimbrado=" + C1idtimbrado + " ,fecha_creado=" + C2fecha_creado + " ,creado_por=" + C3creado_por + " ,mac_pc=" + C4mac_pc + " ,numero=" + C5numero + " ,fecha_inicio=" + C6fecha_inicio + " ,fecha_fin=" + C7fecha_fin + " ,cod_establecimiento=" + C8cod_establecimiento + " ,punto_expedicion=" + C9punto_expedicion + " ,numero_inicial=" + C10numero_inicial + " ,numero_final=" + C11numero_final + " ,numero_actual=" + C12numero_actual + " ,activo=" + C13activo + " ,es_vencido=" + C14es_vencido + " ,numero_limite=" + C15numero_limite + " ,dias_limite=" + C16dias_limite + " ,numero_caja=" + C17numero_caja + " )";
 	}

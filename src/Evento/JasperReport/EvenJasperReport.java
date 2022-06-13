@@ -47,4 +47,25 @@ public class EvenJasperReport {
         }
         
    } 
+    public void imprimirjasper_tamano(Connection conexion,String sql,String titulonota,String direccion,int PageHeight){
+        String titulo="imprimirjasper";
+        try{
+            JasperDesign jasperDesign = JRXmlLoader.load(direccion);
+            System.out.println("jasperDesign.getPageHeight():"+jasperDesign.getPageHeight());
+            jasperDesign.setPageHeight(jasperDesign.getPageHeight()+PageHeight);
+            System.out.println("jasperDesign.getPageHeight():"+jasperDesign.getPageHeight()+" SUMADO");
+            JRDesignQuery newQuery = new JRDesignQuery();
+            newQuery.setText(sql);
+            jasperDesign.setQuery(newQuery);
+            JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, null,conexion);           
+            JasperViewer jviewer = new JasperViewer(jasperPrint,false);
+            jviewer.setTitle(titulonota);
+            jviewer.setVisible(true); 
+            evemen.Imprimir_serial_sql(sql, titulo);
+        }catch(Exception e){
+            evemen.Imprimir_serial_sql_error(e, sql, titulo);
+        }
+        
+   }
 }

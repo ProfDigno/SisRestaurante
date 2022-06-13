@@ -5,6 +5,7 @@
  */
 package FORMULARIO.VISTA;
 
+import BASEDATO.EvenConexion;
 import BASEDATO.LOCAL.ConnPostgres;
 import Evento.Color.cla_color_pelete;
 import Evento.Fecha.EvenFecha;
@@ -31,11 +32,14 @@ public class FrmTimbrado extends javax.swing.JInternalFrame {
     private EvenJTextField evejtf = new EvenJTextField();
     private EvenFecha evefec = new EvenFecha();
     private Connection conn = ConnPostgres.getConnPosgres();
+    private EvenConexion eveconn = new EvenConexion();
     private cla_color_pelete clacolor = new cla_color_pelete();
     private usuario ENTusu = new usuario();
     private empresa ENTemp = new empresa();
     private BO_empresa BOemp = new BO_empresa();
     private DAO_empresa DAOemp = new DAO_empresa();
+    private item_timbrado ENTit=new item_timbrado();
+    private DAO_item_timbrado DAOit=new DAO_item_timbrado();
     private String nombre_formulario = "TIMBRADO";
 
     /**
@@ -49,7 +53,7 @@ public class FrmTimbrado extends javax.swing.JInternalFrame {
         color_formulario();
         seleccionar_tabla_empresa();
     }
-private void seleccionar_tabla_empresa() {
+    private void seleccionar_tabla_empresa() {
         DAOemp.cargar_empresa(conn, ENTemp, 1);
         txtidcliente.setText(String.valueOf(ENTemp.getC1idempresa()));
         txtfecha_inicio.setText(ENTemp.getC2fecha_creado());
@@ -109,7 +113,7 @@ private void seleccionar_tabla_empresa() {
         return true;
     }
 
-    private void cargar_dato() {
+    private void cargar_dato_timbrado() {
         ENTtim.setC2fecha_creado("now()");
         ENTtim.setC3creado_por(ENTusu.getGlobal_nombre());
         ENTtim.setC4mac_pc(txtmac_pc.getText());
@@ -127,11 +131,18 @@ private void seleccionar_tabla_empresa() {
         ENTtim.setC16dias_limite(Integer.parseInt(txtdias_limite.getText()));
         ENTtim.setC17numero_caja(Integer.parseInt(txtnumero_caja.getText()));
     }
-
+    private void cargar_dato_itemtimbrado(){
+        ENTtim.setC1idtimbrado(eveconn.getInt_ultimoID_mas_uno(conn, ENTtim.getTb_timbrado(), ENTtim.getId_idtimbrado()));
+        ENTit.setC2fecha_creado("now()");
+        ENTit.setC3creado_por(ENTusu.getGlobal_nombre());
+        ENTit.setC4fk_idempresa(ENTemp.getC1idempresa());
+        ENTit.setC5fk_idtimbrado(ENTtim.getC1idtimbrado());
+    }
     void boton_guardar() {
         if (validar_guardar()) {
-            cargar_dato();
-            BOtim.insertar_timbrado(ENTtim, tbltimbrado);
+            cargar_dato_timbrado();
+            cargar_dato_itemtimbrado();
+            BOtim.insertar_timbrado(ENTtim, tbltimbrado,ENTit);
             reestableser();
         }
     }
@@ -139,7 +150,7 @@ private void seleccionar_tabla_empresa() {
     void boton_editar() {
         if (validar_guardar()) {
             ENTtim.setC1idtimbrado(Integer.parseInt(txtid.getText()));
-            cargar_dato();
+            cargar_dato_timbrado();
             BOtim.update_timbrado(ENTtim, tbltimbrado);
         }
     }
@@ -604,7 +615,6 @@ private void seleccionar_tabla_empresa() {
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtnumero_caja)
                             .addComponent(txtpunto_expedicion))))
-                .addGap(18, 18, 18)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                         .addComponent(jLabel16)
@@ -648,13 +658,14 @@ private void seleccionar_tabla_empresa() {
                     .addComponent(jLabel16)
                     .addComponent(txtnro_actual, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel17)
-                    .addComponent(txtnro_limite, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel18)
                         .addComponent(txtnumero_caja, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel19)))
+                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel17)
+                        .addComponent(txtnro_limite, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel19))))
         );
 
         jLabel20.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N

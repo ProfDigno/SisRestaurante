@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="226" pageHeight="520" columnWidth="222" leftMargin="2" rightMargin="2" topMargin="10" bottomMargin="2">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="383"/>
+	<queryString>
+		<![CDATA[select fa.idfactura_autoimpresor as idfac,e.razon_social as emp_razon,e.ruc as emp_ruc,e.direccion as emp_direc,e.celular as emp_cel,
+t.numero as tim_nro,to_char(t.fecha_inicio,'dd/MM/yyyy') as tim_fec_ini,to_char(t.fecha_fin,'dd/MM/yyyy') as tim_fec_fin,
+TRIM(TRIM(to_char(fa.cod_establecimiento,'009'))||'-'||TRIM(to_char(fa.punto_expedicion,'009'))||'-'||TRIM(to_char(fa.numeracion_secuencial,'0000009'))) as nro_factura,
+cl.nombre as cli_nombre,cl.ruc as cli_ruc,cl.direccion as cli_direc,cl.telefono as cli_tel,
+fa.condicion as fac_condi,to_char(fa.fecha_creado,'dd/MM/yyyy HH24:MI:ss') as fac_fecha,
+fa.total_pagar as fac_tt_pagar,fa.monto_letra as fac_tt_pag_letra,fa.total_exenta as fac_tt_exe,fa.total_gravada_5 as fac_tt_g5,fa.total_gravada_10 as fac_tt_g10,
+fa.liquidacion_iva_5 as fac_liq_iva5,fa.liquidacion_iva_10 as fac_liq_iva10,(fa.liquidacion_iva_5+fa.liquidacion_iva_10) as fac_tt_liq_iva,
+fa.creado_por as fac_cajero,e.mensaje_final,
+ifa.fk_idproducto as item_cod,ifa.cantidad as item_cant,ifa.descripcion as item_descrip,ifa.precio_venta as tim_preciov,(ifa.cantidad*ifa.precio_venta) as tim_total 
+from empresa e,item_timbrado it,timbrado t,factura_autoimpresor fa,cliente cl,item_factura_auto ifa  
+where e.idempresa=it.fk_idempresa 
+and it.fk_idtimbrado=t.idtimbrado
+and fa.fk_idtimbrado=t.idtimbrado 
+and fa.fk_idcliente=cl.idcliente  
+and fa.idfactura_autoimpresor=ifa.fk_idfactura_autoimpresor 
+and fa.idfactura_autoimpresor=16
+order by ifa.descripcion desc;]]>
+	</queryString>
+	<field name="idfac" class="java.lang.Integer"/>
+	<field name="emp_razon" class="java.lang.String"/>
+	<field name="emp_ruc" class="java.lang.Integer"/>
+	<field name="emp_direc" class="java.lang.String"/>
+	<field name="emp_cel" class="java.lang.String"/>
+	<field name="tim_nro" class="java.lang.Integer"/>
+	<field name="tim_fec_ini" class="java.lang.String"/>
+	<field name="tim_fec_fin" class="java.lang.String"/>
+	<field name="nro_factura" class="java.lang.String"/>
+	<field name="cli_nombre" class="java.lang.String"/>
+	<field name="cli_ruc" class="java.lang.String"/>
+	<field name="cli_direc" class="java.lang.String"/>
+	<field name="cli_tel" class="java.lang.String"/>
+	<field name="fac_condi" class="java.lang.String"/>
+	<field name="fac_fecha" class="java.lang.String"/>
+	<field name="fac_tt_pagar" class="java.math.BigDecimal"/>
+	<field name="fac_tt_pag_letra" class="java.lang.String"/>
+	<field name="fac_tt_exe" class="java.math.BigDecimal"/>
+	<field name="fac_tt_g5" class="java.math.BigDecimal"/>
+	<field name="fac_tt_g10" class="java.math.BigDecimal"/>
+	<field name="fac_liq_iva5" class="java.math.BigDecimal"/>
+	<field name="fac_liq_iva10" class="java.math.BigDecimal"/>
+	<field name="fac_tt_liq_iva" class="java.math.BigDecimal"/>
+	<field name="fac_cajero" class="java.lang.String"/>
+	<field name="mensaje_final" class="java.lang.String"/>
+	<field name="item_cod" class="java.lang.Integer"/>
+	<field name="item_cant" class="java.lang.Integer"/>
+	<field name="item_descrip" class="java.lang.String"/>
+	<field name="tim_preciov" class="java.math.BigDecimal"/>
+	<field name="tim_total" class="java.math.BigDecimal"/>
+	<title>
+		<band height="235" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="16" width="222" height="17"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{emp_razon}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="36" y="33" width="40" height="16"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[R.U.C.:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="90" y="33" width="100" height="16"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{emp_ruc}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="49" width="222" height="13"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{emp_direc}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="36" y="62" width="40" height="13"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[CEL.:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="90" y="62" width="100" height="13"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{emp_cel}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="13" y="75" width="63" height="13"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[TIMBRADO:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="90" y="75" width="100" height="13"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tim_nro}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="13" y="88" width="63" height="13"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Fec. Inicio:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="13" y="101" width="63" height="13"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Fec. Fin:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="90" y="88" width="100" height="13"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{tim_fec_ini}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="90" y="101" width="100" height="13"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{tim_fec_fin}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="114" width="76" height="17"/>
+				<textElement textAlignment="Right">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Factura Nro:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="90" y="114" width="132" height="17"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nro_factura}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="134" width="222" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="5" y="135" width="63" height="13"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[CONDICION:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="81" y="135" width="69" height="13"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{fac_condi}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="5" y="148" width="63" height="14"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[FECHA:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="81" y="148" width="110" height="14"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fac_fecha}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="5" y="162" width="63" height="14"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[CLIENTE:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="81" y="162" width="141" height="14"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{cli_nombre}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="5" y="176" width="63" height="14"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[RUC:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="81" y="176" width="84" height="14"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{cli_ruc}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="5" y="190" width="63" height="14"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[DIRECCION:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="81" y="190" width="141" height="14"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{cli_direc}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="5" y="204" width="63" height="14"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[TEL:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="81" y="204" width="110" height="14"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{cli_tel}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="81" y="218" width="109" height="14"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{fac_cajero}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="5" y="218" width="63" height="14"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[CAJERO:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="232" width="222" height="1"/>
+			</line>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="1" y="2" width="25" height="14"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Cant.]]></text>
+			</staticText>
+			<line>
+				<reportElement x="1" y="17" width="221" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="33" y="2" width="129" height="14"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement/>
+				<text><![CDATA[DETALLE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="166" y="2" width="56" height="14"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[TOTAL]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="13" width="26" height="13"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{item_cant}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1" y="0" width="221" height="13"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{item_descrip}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="150" y="13" width="72" height="13"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{tim_total}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="36" y="13" width="21" height="13"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement x="68" y="13" width="69" height="13"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{tim_preciov}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="137" y="13" width="13" height="13"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[=]]></text>
+			</staticText>
+			<line>
+				<reportElement x="1" y="27" width="221" height="1"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="223">
+			<line>
+				<reportElement x="0" y="0" width="217" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="13" y="5" width="100" height="16"/>
+				<textElement/>
+				<text><![CDATA[TOTAL A PAGAR:]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement x="132" y="5" width="85" height="16"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fac_tt_pagar}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="3" y="23" width="217" height="1"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement x="3" y="24" width="219" height="14"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{fac_tt_pag_letra}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="3" y="40" width="217" height="1"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="5" y="44" width="212" height="14"/>
+				<textElement textAlignment="Center">
+					<font isItalic="true"/>
+				</textElement>
+				<text><![CDATA[=== LIQUIDACION DEL IVA ===]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="5" y="64" width="85" height="14"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[TOT. EXENTAS:]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement x="113" y="64" width="104" height="14"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{fac_tt_exe}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="5" y="78" width="85" height="14"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[TOT. GRAV 5%:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="5" y="92" width="85" height="14"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[TOT. GRAV 10%:]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement x="113" y="78" width="104" height="14"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{fac_tt_g5}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="113" y="92" width="104" height="14"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{fac_liq_iva10}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="5" y="106" width="212" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="5" y="114" width="85" height="14"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[LIQ. IVA 5%:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="5" y="128" width="85" height="14"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[LIQ. IVA 10%:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="5" y="142" width="85" height="14"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[TOT. LIQ. IVA:]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement x="113" y="114" width="104" height="14"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{fac_liq_iva5}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="113" y="128" width="104" height="14"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{fac_liq_iva10}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="113" y="142" width="104" height="14"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{fac_tt_liq_iva}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="5" y="158" width="212" height="1"/>
+				<graphicElement>
+					<pen lineStyle="Dotted"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement x="5" y="159" width="212" height="13"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{mensaje_final}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+</jasperReport>

@@ -23,7 +23,12 @@ public class DAO_timbrado {
     private String sql_insert = "INSERT INTO timbrado(idtimbrado,fecha_creado,creado_por,mac_pc,numero,fecha_inicio,fecha_fin,cod_establecimiento,punto_expedicion,numero_inicial,numero_final,numero_actual,activo,es_vencido,numero_limite,dias_limite,numero_caja) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
     private String sql_update = "UPDATE timbrado SET fecha_creado=?,creado_por=?,mac_pc=?,numero=?,fecha_inicio=?,fecha_fin=?,cod_establecimiento=?,punto_expedicion=?,numero_inicial=?,numero_final=?,numero_actual=?,activo=?,es_vencido=?,numero_limite=?,dias_limite=?,numero_caja=? WHERE idtimbrado=?;";
     private String sql_select = "SELECT idtimbrado,fecha_creado,creado_por,mac_pc,numero,fecha_inicio,fecha_fin,cod_establecimiento,punto_expedicion,numero_inicial,numero_final,numero_actual,activo,es_vencido,numero_limite,dias_limite,numero_caja FROM timbrado order by 1 desc;";
-    private String sql_cargar = "SELECT idtimbrado,fecha_creado,creado_por,mac_pc,numero,fecha_inicio,fecha_fin,cod_establecimiento,punto_expedicion,numero_inicial,numero_final,numero_actual,activo,es_vencido,numero_limite,dias_limite,numero_caja FROM timbrado WHERE idtimbrado=";
+    private String sql_cargar = "SELECT idtimbrado,fecha_creado,creado_por,"
+            + "mac_pc,numero,fecha_inicio,fecha_fin,"
+            + "cod_establecimiento,punto_expedicion,numero_inicial,numero_final,numero_actual,"
+            + "activo,es_vencido,numero_limite,dias_limite,numero_caja,"
+            + "(fecha_fin-current_date) as dia_vence_resto "
+            + "FROM timbrado WHERE idtimbrado=";
 
     public void insertar_timbrado(Connection conn, timbrado tim) {
         tim.setC1idtimbrado(eveconn.getInt_ultimoID_mas_uno(conn, tim.getTb_timbrado(), tim.getId_idtimbrado()));
@@ -110,6 +115,7 @@ public class DAO_timbrado {
                 tim.setC15numero_limite(rs.getInt(15));
                 tim.setC16dias_limite(rs.getInt(16));
                 tim.setC17numero_caja(rs.getInt(17));
+                tim.setDia_vence_resto(rs.getInt(18));
                 evemen.Imprimir_serial_sql(sql_cargar + "\n" + tim.toString(), titulo);
             }
         } catch (Exception e) {

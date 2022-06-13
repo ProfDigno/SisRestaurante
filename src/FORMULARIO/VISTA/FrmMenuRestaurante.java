@@ -86,7 +86,7 @@ public class FrmMenuRestaurante extends javax.swing.JFrame {
         iniciarTiempo();
         habilitar_menu(false);
         codao.cargar_cotizacion(coti, 1);
-        corte.setFecha_corte("2023-12-30");
+        corte.setFecha_corte("2022-12-30");
         txtvercion.setText("V:" + jsconfig.getVersion());
         jFdolar.setValue(coti.getDolar_guarani());
         jFreal.setValue(coti.getReal_guarani());

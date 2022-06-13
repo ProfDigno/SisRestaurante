@@ -35,6 +35,7 @@ import FORMULARIO.ENTIDAD.timbrado;
 import FORMULARIO.ENTIDAD.usuario;
 import FORMULARIO.ENTIDAD.venta;
 import IMPRESORA_POS.PosImprimir_Venta;
+import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -112,6 +113,12 @@ public class FrmFacturaAutoImpresor extends javax.swing.JInternalFrame {
     private int fk_idcliente;
     private int fk_idcajero;
     private int fk_idusuario;
+    private boolean es_timbrado_vencido;
+    private int tim_numero_final;
+    private int tim_numero_actual;
+    private int tim_numero_limite;
+    private int tim_dias_limite;
+    private int tim_dia_vence_resto;
 
     /**
      * Creates new form FrmFactura
@@ -119,12 +126,11 @@ public class FrmFacturaAutoImpresor extends javax.swing.JInternalFrame {
     private void abrir_formulario() {
         this.setTitle(nombre_formulario);
         evetbl.centrar_formulario(this);
-        
+
         reestableser_factura();
         crear_item_producto();
         color_formulario();
-        
-        
+
         if (ENTfau.isFactura_cargada()) {
             seleccionar_cargar_cliente(4);
             cargar_itemfactura_deventa();
@@ -257,6 +263,7 @@ public class FrmFacturaAutoImpresor extends javax.swing.JInternalFrame {
         txtbucarCliente_direccion.setText(null);
         txtbucarCliente_telefono.grabFocus();
     }
+
     void cargar_itemfactura_deventa() {
         String titulo = "cargar_itemfactura_deventa";
         String sql = "SELECT iditem_venta, descripcion, precio_venta, precio_compra, cantidad, \n"
@@ -351,9 +358,36 @@ public class FrmFacturaAutoImpresor extends javax.swing.JInternalFrame {
     }
 
     boolean validar_guardar_factura() {
+        System.out.println("tim_numero_actual:" + tim_numero_actual);
+        System.out.println("tim_numero_final:" + tim_numero_final);
+        System.out.println("tim_numero_limite:" + tim_numero_limite);
+        /**
+         * tim_numero_actual:1008 tim_numero_final:5000 tim_numero_limite:20
+         */
+        if ((tim_numero_final-tim_numero_actual) <= tim_numero_limite) {
+            JOptionPane.showMessageDialog(this, "SU NUMERO DE FACTURA YA ESTA LLEGANDO AL LIMITE SE DEBE SOLICITAR NUEVO TIMBRADO"
+                    + "\nNUMERO RESTANTE:"+(tim_numero_final-tim_numero_actual),"LIMITE DE NUMERO",JOptionPane.WARNING_MESSAGE);
+        }
+        if(tim_dia_vence_resto<tim_dias_limite){
+            JOptionPane.showMessageDialog(null, "SU DIA DE VENCIMIENTO DE TIMBRADO SE APROXIMA:\nFECHA:" + ENTtim.getC7fecha_fin() + "\n DEBE SOLICITAR NUEVO TIMBRADO"
+            ,"VENCIMIENTO",JOptionPane.WARNING_MESSAGE);
+        }
         if (evejtf.getBoo_JTextField_vacio(txtnro_factura, "CARGUE UN NUMERO DE FACTURA")) {
             return false;
         }
+        if (es_timbrado_vencido) {
+            panel_factura.setBackground(Color.RED);
+            txttim_fec_fin.setBackground(Color.yellow);
+            JOptionPane.showMessageDialog(null, "SU TIMBRADO VENCIO EL:\nFECHA:" + ENTtim.getC7fecha_fin() + "\n DEBE SOLICITAR NUEVO TIMBRADO"
+            ,"VENCIDO",JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if ((tim_numero_final<=tim_numero_actual)) {
+            JOptionPane.showMessageDialog(this, "SU NUMERO DE FACTURA YA ESTA AGOTADO  SE DEBE SOLICITAR NUEVO TIMBRADO"
+                    + "\nNUMERO RESTANTE:"+(tim_numero_final-tim_numero_actual),"NUMERO AGOTADO",JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+
         return true;
     }
 
@@ -432,7 +466,9 @@ public class FrmFacturaAutoImpresor extends javax.swing.JInternalFrame {
         if (validar_guardar_factura()) {
             cargar_datos_factura();
             if (BOfau.getBoo_insertar_factura_autoimpresor(ENTfau, ENTven.getC1idventa_estatico())) {
+                DAOfau.imprimir_ticket_factura_auto(conn, idfactura_autoimpresor, total_item);
                 reestableser_factura();
+                
                 this.dispose();
 //                DAOfau.imprimir_factura(conn, idfactura_autoimpresor);
             }
@@ -443,6 +479,7 @@ public class FrmFacturaAutoImpresor extends javax.swing.JInternalFrame {
         if (!evejt.getBoolean_validar_select(tblfactura)) {
             if (evemen.MensajeGeneral_warning("ESTAS SEGURO DE ANULAR ESTA FACTURA", "ANULAR", "ACEPTAR", "CANCELAR")) {
                 int idfactura = evejt.getInt_select_id(tblfactura);
+                
 //                ENTfau.setC1idfactura(idfactura);
 //                ENTfau.setC4estado("ANULADO");
 //                if (BOfau.getBoolean_update_anular_factura(ENTfau)) {
@@ -455,20 +492,32 @@ public class FrmFacturaAutoImpresor extends javax.swing.JInternalFrame {
     void boton_imprimir_factura() {
         if (!evejt.getBoolean_validar_select(tblfactura)) {
             int idfactura = evejt.getInt_select_id(tblfactura);
+            int total_item=evejt.getInt_select(tblfactura,1);
+                DAOfau.imprimir_ticket_factura_auto(conn, idfactura, total_item);
 //            DAOfau.imprimir_factura(conn, idfactura);
         }
     }
-    void cargar_timbrado(){
+
+    void cargar_timbrado() {
         DAOtim.cargar_timbrado(conn, ENTtim, fk_idtimbrado);
+        es_timbrado_vencido = ENTtim.getC14es_vencido();
         txttim_fec_inicio.setText(ENTtim.getC6fecha_inicio());
         txttim_fec_fin.setText(ENTtim.getC7fecha_fin());
         txttim_nro_timbrado.setText(String.valueOf(ENTtim.getC5numero()));
         txttim_nro_inicio.setText(String.valueOf(ENTtim.getC10numero_inicial()));
         txttim_nro_final.setText(String.valueOf(ENTtim.getC11numero_final()));
+        
         cod_establecimiento = ENTtim.getC8cod_establecimiento();
         punto_expedicion = ENTtim.getC9punto_expedicion();
-        numeracion_secuencial = ENTtim.getC12numero_actual()+1;
+        numeracion_secuencial = ENTtim.getC12numero_actual() + 1;
+        tim_numero_final = ENTtim.getC11numero_final();
+        tim_numero_actual = ENTtim.getC12numero_actual();
+        tim_numero_limite = ENTtim.getC15numero_limite();
+        tim_dias_limite=ENTtim.getC16dias_limite();
+        tim_dia_vence_resto=ENTtim.getDia_vence_resto();
+        txttim_nro_disponible.setText(String.valueOf(tim_numero_final-tim_numero_actual));
     }
+
     public FrmFacturaAutoImpresor() {
         initComponents();
         abrir_formulario();
@@ -528,6 +577,8 @@ public class FrmFacturaAutoImpresor extends javax.swing.JInternalFrame {
         txttim_nro_inicio = new javax.swing.JTextField();
         txttim_nro_final = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        txttim_nro_disponible = new javax.swing.JTextField();
         panel_base = new javax.swing.JPanel();
         panel_tabla = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -842,7 +893,7 @@ public class FrmFacturaAutoImpresor extends javax.swing.JInternalFrame {
                     .addComponent(jFliquidacion_iva_10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jFtotal_liq_iva, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jFtotal_pagar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         panel_factura.setBackground(new java.awt.Color(102, 102, 255));
@@ -880,6 +931,11 @@ public class FrmFacturaAutoImpresor extends javax.swing.JInternalFrame {
 
         jLabel10.setText("Nro. Final:");
 
+        jLabel11.setText("Nro. Disponible:");
+
+        txttim_nro_disponible.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        txttim_nro_disponible.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
         javax.swing.GroupLayout panel_facturaLayout = new javax.swing.GroupLayout(panel_factura);
         panel_factura.setLayout(panel_facturaLayout);
         panel_facturaLayout.setHorizontalGroup(
@@ -893,13 +949,15 @@ public class FrmFacturaAutoImpresor extends javax.swing.JInternalFrame {
                     .addComponent(txttim_nro_timbrado)
                     .addComponent(txttim_nro_inicio)
                     .addComponent(txttim_nro_final)
+                    .addComponent(txttim_nro_disponible)
                     .addGroup(panel_facturaLayout.createSequentialGroup()
                         .addGroup(panel_facturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
                             .addComponent(jLabel7)
                             .addComponent(jLabel8)
                             .addComponent(jLabel9)
-                            .addComponent(jLabel10))
+                            .addComponent(jLabel10)
+                            .addComponent(jLabel11))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -925,6 +983,10 @@ public class FrmFacturaAutoImpresor extends javax.swing.JInternalFrame {
                 .addComponent(jLabel10)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txttim_nro_final, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel11)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txttim_nro_disponible, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnguardar_factura, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -1127,6 +1189,7 @@ public class FrmFacturaAutoImpresor extends javax.swing.JInternalFrame {
     private javax.swing.JFormattedTextField jFtotal_pagar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -1159,6 +1222,7 @@ public class FrmFacturaAutoImpresor extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtnro_factura;
     private javax.swing.JTextField txttim_fec_fin;
     private javax.swing.JTextField txttim_fec_inicio;
+    private javax.swing.JTextField txttim_nro_disponible;
     private javax.swing.JTextField txttim_nro_final;
     private javax.swing.JTextField txttim_nro_inicio;
     private javax.swing.JTextField txttim_nro_timbrado;
