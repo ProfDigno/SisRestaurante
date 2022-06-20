@@ -269,7 +269,8 @@ public class FrmFacturaAutoImpresor extends javax.swing.JInternalFrame {
         String sql = "SELECT iditem_venta, descripcion, precio_venta, precio_compra, cantidad, \n"
                 + "       tipo, fk_idventa, fk_idproducto,(precio_venta*cantidad) as total\n"
                 + "  FROM public.item_venta "
-                + "where precio_venta>0 and fk_idventa=" + ENTven.getC1idventa_estatico();
+                + "where precio_venta!=0 and fk_idventa=" + ENTven.getC1idventa_estatico() 
+                + " order by iditem_venta asc;";
         try {
             ResultSet rs = eveconn.getResulsetSQL(conn, sql, titulo);
             while (rs.next()) {
@@ -292,36 +293,38 @@ public class FrmFacturaAutoImpresor extends javax.swing.JInternalFrame {
         String sql = "SELECT count(*) as total_item,\n"
                 + " sum(iv.cantidad) as total_articulo,  \n"
                 + " sum(iv.precio_venta*iv.cantidad) as total_pagar ,\n"
-                + " sum(case when iv.tipo='P' and p.iva=0 then (iv.precio_venta*iv.cantidad) \n"
-                + "      when iv.tipo='N' and p.iva=0 then (iv.precio_venta*iv.cantidad) \n"
+                + " sum(case when iv.tipo='P' and iv.iva=0 then (iv.precio_venta*iv.cantidad) \n"
+                + "      when iv.tipo='N' and iv.iva=0 then (iv.precio_venta*iv.cantidad) \n"
                 + "      else 0 end) as total_exenta,\n"
-                + " sum(case when iv.tipo='P' and p.iva=5 then (iv.precio_venta*iv.cantidad) \n"
-                + "      when iv.tipo='N' and p.iva=5 then (iv.precio_venta*iv.cantidad) \n"
+                + " sum(case when iv.tipo='P' and iv.iva=5 then (iv.precio_venta*iv.cantidad) \n"
+                + "      when iv.tipo='N' and iv.iva=5 then (iv.precio_venta*iv.cantidad) \n"
                 + "      else 0 end) as total_gravada_5,\n"
-                + " sum(case when iv.tipo='P' and p.iva=10 then (iv.precio_venta*iv.cantidad) \n"
-                + "      when iv.tipo='N' and p.iva=10 then (iv.precio_venta*iv.cantidad) \n"
+                + " sum(case when iv.tipo='P' and iv.iva=10 then (iv.precio_venta*iv.cantidad) \n"
+                + "      when iv.tipo='N' and iv.iva=10 then (iv.precio_venta*iv.cantidad) \n"
                 + "      when iv.tipo='I' then (iv.precio_venta*iv.cantidad) \n"
                 + "      when iv.tipo='D' then (iv.precio_venta*iv.cantidad) \n"
+                + "      when iv.tipo='S' then (iv.precio_venta*iv.cantidad) \n"
                 + "      else 0 end) as total_gravada_10,\n"
-                + " sum(case when iv.tipo='P' and p.iva=5 then ((iv.precio_venta*iv.cantidad)/21) \n"
-                + "      when iv.tipo='N' and p.iva=5 then ((iv.precio_venta*iv.cantidad)/21) \n"
+                + " sum(case when iv.tipo='P' and iv.iva=5 then ((iv.precio_venta*iv.cantidad)/21) \n"
+                + "      when iv.tipo='N' and iv.iva=5 then ((iv.precio_venta*iv.cantidad)/21) \n"
                 + "      else 0 end) as liquidacion_iva_5,\n"
-                + " sum(case when iv.tipo='P' and p.iva=10 then ((iv.precio_venta*iv.cantidad)/11) \n"
-                + "      when iv.tipo='N' and p.iva=10 then ((iv.precio_venta*iv.cantidad)/11)\n"
+                + " sum(case when iv.tipo='P' and iv.iva=10 then ((iv.precio_venta*iv.cantidad)/11) \n"
+                + "      when iv.tipo='N' and iv.iva=10 then ((iv.precio_venta*iv.cantidad)/11)\n"
                 + "      when iv.tipo='I' then ((iv.precio_venta*iv.cantidad)/11) \n"
                 + "      when iv.tipo='D' then ((iv.precio_venta*iv.cantidad)/11) \n"
+                + "      when iv.tipo='S' then ((iv.precio_venta*iv.cantidad)/11)\n"
                 + "      else 0 end) as liquidacion_iva_10,\n"
-                + " sum(case when iv.tipo='P' and p.iva=5 then ((iv.precio_venta*iv.cantidad)/21) \n"
-                + "      when iv.tipo='N' and p.iva=5 then ((iv.precio_venta*iv.cantidad)/21) \n"
+                + " sum(case when iv.tipo='P' and iv.iva=5 then ((iv.precio_venta*iv.cantidad)/21) \n"
+                + "      when iv.tipo='N' and iv.iva=5 then ((iv.precio_venta*iv.cantidad)/21) \n"
                 + "      else 0 end)+\n"
-                + " sum(case when iv.tipo='P' and p.iva=10 then ((iv.precio_venta*iv.cantidad)/11) \n"
-                + "      when iv.tipo='N' and p.iva=10 then ((iv.precio_venta*iv.cantidad)/11)\n"
+                + " sum(case when iv.tipo='P' and iv.iva=10 then ((iv.precio_venta*iv.cantidad)/11) \n"
+                + "      when iv.tipo='N' and iv.iva=10 then ((iv.precio_venta*iv.cantidad)/11)\n"
                 + "      when iv.tipo='I' then ((iv.precio_venta*iv.cantidad)/11) \n"
                 + "      when iv.tipo='D' then ((iv.precio_venta*iv.cantidad)/11) \n"
-                + "      else 0 end) as suma_iva "
-                + "  FROM item_venta iv,producto p\n"
-                + "where iv.fk_idproducto=p.idproducto\n"
-                + "and iv.precio_venta>0\n"
+                + "      when iv.tipo='S' then ((iv.precio_venta*iv.cantidad)/11) \n"
+                + "      else 0 end) as suma_iva   \n"
+                + "FROM item_venta iv\n"
+                + "where  iv.precio_venta!=0\n"
                 + "and iv.fk_idventa=" + ENTven.getC1idventa_estatico();
         try {
             ResultSet rs = eveconn.getResulsetSQL(conn, sql, titulo);
@@ -364,13 +367,13 @@ public class FrmFacturaAutoImpresor extends javax.swing.JInternalFrame {
         /**
          * tim_numero_actual:1008 tim_numero_final:5000 tim_numero_limite:20
          */
-        if ((tim_numero_final-tim_numero_actual) <= tim_numero_limite) {
+        if ((tim_numero_final - tim_numero_actual) <= tim_numero_limite) {
             JOptionPane.showMessageDialog(this, "SU NUMERO DE FACTURA YA ESTA LLEGANDO AL LIMITE SE DEBE SOLICITAR NUEVO TIMBRADO"
-                    + "\nNUMERO RESTANTE:"+(tim_numero_final-tim_numero_actual),"LIMITE DE NUMERO",JOptionPane.WARNING_MESSAGE);
+                    + "\nNUMERO RESTANTE:" + (tim_numero_final - tim_numero_actual), "LIMITE DE NUMERO", JOptionPane.WARNING_MESSAGE);
         }
-        if(tim_dia_vence_resto<tim_dias_limite){
-            JOptionPane.showMessageDialog(null, "SU DIA DE VENCIMIENTO DE TIMBRADO SE APROXIMA:\nFECHA:" + ENTtim.getC7fecha_fin() + "\n DEBE SOLICITAR NUEVO TIMBRADO"
-            ,"VENCIMIENTO",JOptionPane.WARNING_MESSAGE);
+        if (tim_dia_vence_resto < tim_dias_limite) {
+            JOptionPane.showMessageDialog(null, "SU DIA DE VENCIMIENTO DE TIMBRADO SE APROXIMA:\nFECHA:" + ENTtim.getC7fecha_fin() + "\n DEBE SOLICITAR NUEVO TIMBRADO",
+                     "VENCIMIENTO", JOptionPane.WARNING_MESSAGE);
         }
         if (evejtf.getBoo_JTextField_vacio(txtnro_factura, "CARGUE UN NUMERO DE FACTURA")) {
             return false;
@@ -378,13 +381,13 @@ public class FrmFacturaAutoImpresor extends javax.swing.JInternalFrame {
         if (es_timbrado_vencido) {
             panel_factura.setBackground(Color.RED);
             txttim_fec_fin.setBackground(Color.yellow);
-            JOptionPane.showMessageDialog(null, "SU TIMBRADO VENCIO EL:\nFECHA:" + ENTtim.getC7fecha_fin() + "\n DEBE SOLICITAR NUEVO TIMBRADO"
-            ,"VENCIDO",JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "SU TIMBRADO VENCIO EL:\nFECHA:" + ENTtim.getC7fecha_fin() + "\n DEBE SOLICITAR NUEVO TIMBRADO",
+                     "VENCIDO", JOptionPane.ERROR_MESSAGE);
             return false;
         }
-        if ((tim_numero_final<=tim_numero_actual)) {
+        if ((tim_numero_final <= tim_numero_actual)) {
             JOptionPane.showMessageDialog(this, "SU NUMERO DE FACTURA YA ESTA AGOTADO  SE DEBE SOLICITAR NUEVO TIMBRADO"
-                    + "\nNUMERO RESTANTE:"+(tim_numero_final-tim_numero_actual),"NUMERO AGOTADO",JOptionPane.ERROR_MESSAGE);
+                    + "\nNUMERO RESTANTE:" + (tim_numero_final - tim_numero_actual), "NUMERO AGOTADO", JOptionPane.ERROR_MESSAGE);
             return false;
         }
 
@@ -468,7 +471,7 @@ public class FrmFacturaAutoImpresor extends javax.swing.JInternalFrame {
             if (BOfau.getBoo_insertar_factura_autoimpresor(ENTfau, ENTven.getC1idventa_estatico())) {
                 DAOfau.imprimir_ticket_factura_auto(conn, idfactura_autoimpresor, total_item);
                 reestableser_factura();
-                
+
                 this.dispose();
 //                DAOfau.imprimir_factura(conn, idfactura_autoimpresor);
             }
@@ -479,7 +482,7 @@ public class FrmFacturaAutoImpresor extends javax.swing.JInternalFrame {
         if (!evejt.getBoolean_validar_select(tblfactura)) {
             if (evemen.MensajeGeneral_warning("ESTAS SEGURO DE ANULAR ESTA FACTURA", "ANULAR", "ACEPTAR", "CANCELAR")) {
                 int idfactura = evejt.getInt_select_id(tblfactura);
-                
+
 //                ENTfau.setC1idfactura(idfactura);
 //                ENTfau.setC4estado("ANULADO");
 //                if (BOfau.getBoolean_update_anular_factura(ENTfau)) {
@@ -492,8 +495,8 @@ public class FrmFacturaAutoImpresor extends javax.swing.JInternalFrame {
     void boton_imprimir_factura() {
         if (!evejt.getBoolean_validar_select(tblfactura)) {
             int idfactura = evejt.getInt_select_id(tblfactura);
-            int total_item=evejt.getInt_select(tblfactura,1);
-                DAOfau.imprimir_ticket_factura_auto(conn, idfactura, total_item);
+            int total_item = evejt.getInt_select(tblfactura, 1);
+            DAOfau.imprimir_ticket_factura_auto(conn, idfactura, total_item);
 //            DAOfau.imprimir_factura(conn, idfactura);
         }
     }
@@ -506,16 +509,16 @@ public class FrmFacturaAutoImpresor extends javax.swing.JInternalFrame {
         txttim_nro_timbrado.setText(String.valueOf(ENTtim.getC5numero()));
         txttim_nro_inicio.setText(String.valueOf(ENTtim.getC10numero_inicial()));
         txttim_nro_final.setText(String.valueOf(ENTtim.getC11numero_final()));
-        
+
         cod_establecimiento = ENTtim.getC8cod_establecimiento();
         punto_expedicion = ENTtim.getC9punto_expedicion();
         numeracion_secuencial = ENTtim.getC12numero_actual() + 1;
         tim_numero_final = ENTtim.getC11numero_final();
         tim_numero_actual = ENTtim.getC12numero_actual();
         tim_numero_limite = ENTtim.getC15numero_limite();
-        tim_dias_limite=ENTtim.getC16dias_limite();
-        tim_dia_vence_resto=ENTtim.getDia_vence_resto();
-        txttim_nro_disponible.setText(String.valueOf(tim_numero_final-tim_numero_actual));
+        tim_dias_limite = ENTtim.getC16dias_limite();
+        tim_dia_vence_resto = ENTtim.getDia_vence_resto();
+        txttim_nro_disponible.setText(String.valueOf(tim_numero_final - tim_numero_actual));
     }
 
     public FrmFacturaAutoImpresor() {

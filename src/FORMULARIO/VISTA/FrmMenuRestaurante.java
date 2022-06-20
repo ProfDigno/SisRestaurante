@@ -11,6 +11,7 @@ import BASEDATO.LOCAL.VariablesBD;
 import CONFIGURACION.ClaCorteAdmin;
 import Config_JSON.json_array_conexion;
 import Config_JSON.json_config;
+import Config_JSON.json_config_json;
 import Config_JSON.json_crear_cliente;
 import Config_JSON.json_imprimir_pos;
 import Evento.Archivos.EvenArchivo;
@@ -67,6 +68,7 @@ public class FrmMenuRestaurante extends javax.swing.JFrame {
     cla_color_pelete clacolor = new cla_color_pelete();
     json_config jsconfig = new json_config();
     json_crear_cliente jsCli = new json_crear_cliente();
+//    json_config_json jsconjs=new json_config_json();
     ClaCorteAdmin corte = new ClaCorteAdmin();
 //    json_crear_cliente jsCli=new json_crear_cliente();
     json_imprimir_pos jsprint = new json_imprimir_pos();
@@ -77,11 +79,13 @@ public class FrmMenuRestaurante extends javax.swing.JFrame {
     json_array_conexion jscon=new json_array_conexion();
     EvenArchivo evearc=new EvenArchivo();
     void abrir_formulario() {
+//         jscon.cargar_jsom_array();
         conPs.ConnectDBpostgres(conn,false);
         conn = conPs.getConnPosgres();
         covi.setComanda_abierto(true);
         jsconfig.cargar_jsom_configuracion();
         jsprint.cargar_jsom_imprimir_pos();
+        
         this.setExtendedState(MAXIMIZED_BOTH);
         iniciarTiempo();
         habilitar_menu(false);
@@ -94,8 +98,8 @@ public class FrmMenuRestaurante extends javax.swing.JFrame {
         actualizacion_version_v1();
     }
     void boton_json(){
-        jscon.cargar_jsom_array();
-        evearc.eliminar_archivos_de_carpeta_fechalimite("backup\\");
+//        jscon.cargar_jsom_array();
+//        evearc.eliminar_archivos_de_carpeta_fechalimite("backup\\");
     }
     void cargar_producto_grupo() {
         pgDAO.cargar_producto_grupo(conn, pgru, 0);
@@ -297,9 +301,11 @@ public class FrmMenuRestaurante extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         jMenuItem15 = new javax.swing.JMenuItem();
         jMenuItem16 = new javax.swing.JMenuItem();
+        jMenuItem40 = new javax.swing.JMenuItem();
         jMenuItem17 = new javax.swing.JMenuItem();
         jMenuItem36 = new javax.swing.JMenuItem();
         jMenuItem37 = new javax.swing.JMenuItem();
+        jMenuItem41 = new javax.swing.JMenuItem();
         jMenu_caja = new javax.swing.JMenu();
         jMenuItem11 = new javax.swing.JMenuItem();
         jMenuItem28 = new javax.swing.JMenuItem();
@@ -848,6 +854,14 @@ public class FrmMenuRestaurante extends javax.swing.JFrame {
         });
         jMenu1.add(jMenuItem16);
 
+        jMenuItem40.setText("CONFIGURAR JSON CONEXION");
+        jMenuItem40.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem40ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem40);
+
         jMenu_config.add(jMenu1);
 
         jMenuItem17.setText("COTIZACION");
@@ -873,6 +887,14 @@ public class FrmMenuRestaurante extends javax.swing.JFrame {
             }
         });
         jMenu_config.add(jMenuItem37);
+
+        jMenuItem41.setText("RESTABLESER SISTEMA");
+        jMenuItem41.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem41ActionPerformed(evt);
+            }
+        });
+        jMenu_config.add(jMenuItem41);
 
         jMenuBar1.add(jMenu_config);
 
@@ -1300,6 +1322,16 @@ public class FrmMenuRestaurante extends javax.swing.JFrame {
         evetbl.abrir_TablaJinternal(new FrmTimbrado());
     }//GEN-LAST:event_jMenuItem39ActionPerformed
 
+    private void jMenuItem40ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem40ActionPerformed
+        // TODO add your handling code here:
+        jscon.abrir_este_json();
+    }//GEN-LAST:event_jMenuItem40ActionPerformed
+
+    private void jMenuItem41ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem41ActionPerformed
+        // TODO add your handling code here:
+        evetbl.abrir_TablaJinternal(new FrmRestableserSistema());
+    }//GEN-LAST:event_jMenuItem41ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1462,6 +1494,8 @@ public class FrmMenuRestaurante extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem38;
     private javax.swing.JMenuItem jMenuItem39;
     private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem40;
+    private javax.swing.JMenuItem jMenuItem41;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;

@@ -159,6 +159,10 @@ public class FrmVenta extends javax.swing.JInternalFrame {
     private double monto_venta_efectivo;
     private double monto_venta_tarjeta;
     private int maximo_item_factura = 9;
+    private String estado_ven_EMITIDO = "EMITIDO";
+    private String estado_ven_ANULADO = "ANULADO";
+    private String estado_ven_ANULADO_temp = "ANULADO_temp";
+    private String estado_ven_TERMINADO = "TERMINADO";
 
     void abrir_formulario() {
         String servidor = "";
@@ -214,12 +218,12 @@ public class FrmVenta extends javax.swing.JInternalFrame {
     }
 
     void crear_item_producto() {
-        String dato[] = {"id", "T", "descripcion", "precio", "C", "total", "g"};
+        String dato[] = {"id", "T", "descripcion", "precio", "C", "total", "g","iva"};
         evejt.crear_tabla_datos(tblitem_producto, model_itemf, dato);
     }
 
     void ancho_item_producto() {
-        int Ancho[] = {5, 5, 53, 15, 6, 14, 2};
+        int Ancho[] = {5, 5, 53, 15, 6, 14, 2,2};
         evejt.setAnchoColumnaJtable(tblitem_producto, Ancho);
     }
 
@@ -240,7 +244,7 @@ public class FrmVenta extends javax.swing.JInternalFrame {
         if (evejt.getBoolean_validar_select(tblingrediente)) {
             return false;
         }
-        if (evejt.getString_select(tblitem_producto, 1).equals("I")) {
+        if (evejt.getString_select(tblitem_producto, 1).equals(item.getTipo_ingrediente())) {
             JOptionPane.showMessageDialog(null, "EL INGREDIENTE NO PUEDE SER SELECCIONADO");
             return false;
         }
@@ -277,7 +281,7 @@ public class FrmVenta extends javax.swing.JInternalFrame {
             String precioUni = "";
             String cantidad = "1";
             String total = "";
-            String Stipo="I";
+            String Stipo=item.getTipo_ingrediente();
             String grupo = grupo_en_ingrediente;
             if (tipo == 1) {
                 agregar = "--(SIN)>";
@@ -292,7 +296,8 @@ public class FrmVenta extends javax.swing.JInternalFrame {
             idproducto_ingrediente = evejt.getString_select(tblingrediente, 0);
             descripcion = agregar + evejt.getString_select(tblingrediente, 1);
             cantidad = "1";
-            String dato[] = {idproducto_ingrediente,Stipo, descripcion, precioUni, cantidad, total, grupo};
+            String iva="0";
+            String dato[] = {idproducto_ingrediente,Stipo, descripcion, precioUni, cantidad, total, grupo,iva};
             evejt.cargar_tabla_dato_bajolinea(tblitem_producto, model_itemf, dato);
             int idproducto = evejt.getInt_select_id(tblitem_producto);
             ipidao.actualizar_tabla_item_producto_ingrediente(connLocal, tblingrediente, idproducto);
@@ -314,7 +319,9 @@ public class FrmVenta extends javax.swing.JInternalFrame {
                 double Dcantidad = Double.parseDouble(cantidad);
                 String total = String.valueOf(precio * Dcantidad);
                 String grupo = "0";
-                String dato[] = {idproducto, "D", descripcion, precioUni, cantidad, total, grupo};
+                String iva="0";
+                String tipo=item.getTipo_delivery();
+                String dato[] = {idproducto, tipo, descripcion, precioUni, cantidad, total, grupo,iva};
                 evejt.cargar_tabla_datos(tblitem_producto, model_itemf, dato);
                 txtcantidad_producto.setText("1");
                 sumar_item_venta();
@@ -338,7 +345,9 @@ public class FrmVenta extends javax.swing.JInternalFrame {
             double Dcantidad = Double.parseDouble(cantidad);
             String total = String.valueOf(precio * Dcantidad);
             String grupo = "0";
-            String dato[] = {idproducto, "D", descripcion, precioUni, cantidad, total, grupo};
+            String iva="0";
+            String tipo=item.getTipo_delivery();
+            String dato[] = {idproducto, tipo, descripcion, precioUni, cantidad, total, grupo,iva};
             evejt.cargar_tabla_datos(tblitem_producto, model_itemf, dato);
             txtcantidad_producto.setText("1");
             sumar_item_venta();
@@ -349,7 +358,7 @@ public class FrmVenta extends javax.swing.JInternalFrame {
 
     void copiar_itemventa(int idventa) {
         String titulo = "duplicar_itemventa";
-        String sql = "select fk_idproducto,descripcion,precio_venta,cantidad,tipo,grupo "
+        String sql = "select fk_idproducto,descripcion,precio_venta,cantidad,tipo,grupo,iva "
                 + "from item_venta where fk_idventa=" + idventa
                 + " order by iditem_venta asc";
         try {
@@ -364,7 +373,8 @@ public class FrmVenta extends javax.swing.JInternalFrame {
                 double DprecioUni = Double.parseDouble(precioUni);
                 String total = String.valueOf(DprecioUni * Dcantidad);
                 String tipo = rs.getString("tipo");
-                String dato[] = {idproducto, tipo, descripcion, precioUni, cantidad, total, grupo};
+                String iva = rs.getString("iva");
+                String dato[] = {idproducto, tipo, descripcion, precioUni, cantidad, total, grupo,iva};
                 evejt.cargar_tabla_datos(tblitem_producto, model_itemf, dato);
             }
         } catch (Exception e) {
@@ -378,6 +388,7 @@ public class FrmVenta extends javax.swing.JInternalFrame {
             int idproducto_select = evejt.getInt_select_id(tblproducto);
             pdao.cargar_producto(prod, idproducto_select);
             String idproducto = String.valueOf(prod.getP1idproducto());
+            String iva=String.valueOf(prod.getP16iva());
 //            String descripcion = prod.getP12categoria() + "-" + prod.getP13unidad() + "-" + prod.getP2nombre();
             String descripcion = prod.getP13unidad() + "-" + prod.getP2nombre();
             int IprecioUni = (int) prod.getP3precio_venta();
@@ -388,12 +399,12 @@ public class FrmVenta extends javax.swing.JInternalFrame {
             String total = String.valueOf(subtotal);
             String tipo = "";
             if (prod.isP8cocina()) {
-                tipo = "P";
+                tipo =item.getTipo_producto();
             } else {
-                tipo = "N";
+                tipo =item.getTipo_producto_stock();
             }
             String grupo = String.valueOf(prod.getP14fk_idproducto_grupo());
-            String dato[] = {idproducto, tipo, descripcion, precioUni, cantidad, total, grupo};
+            String dato[] = {idproducto, tipo, descripcion, precioUni, cantidad, total, grupo,iva};
             evejt.cargar_tabla_datos(tblitem_producto, model_itemf, dato);
             txtcantidad_producto.setText("1");
             sumar_item_venta();
@@ -407,9 +418,10 @@ public class FrmVenta extends javax.swing.JInternalFrame {
             String precioUni = "0";
             String cantidad = "1";
             String total = "0";
-            String tipo = "I";
+            String tipo = item.getTipo_observacion();
             String grupo = "0";
-            String dato[] = {idproducto, tipo, descripcion, precioUni, cantidad, total, grupo};
+            String iva = "0";
+            String dato[] = {idproducto, tipo, descripcion, precioUni, cantidad, total, grupo,iva};
             evejt.cargar_tabla_dato_bajolinea(tblitem_producto, model_itemf, dato);
             txtcantidad_producto.setText("1");
             txtobservacion_ingre.setText(null);
@@ -424,9 +436,10 @@ public class FrmVenta extends javax.swing.JInternalFrame {
             String precioUni = "-" + evejtf.getDouble_convertir_JTextField(txtdescontar);
             String cantidad = "1";
             String total = "-" + evejtf.getDouble_convertir_JTextField(txtdescontar);
-            String tipo = "S";
+            String tipo = item.getTipo_descontar();
             String grupo = "0";
-            String dato[] = {idproducto, tipo, descripcion, precioUni, cantidad, total, grupo};
+            String iva = "0";
+            String dato[] = {idproducto, tipo, descripcion, precioUni, cantidad, total, grupo,iva};
             evejt.cargar_tabla_dato_ultima_linea(tblitem_producto, model_itemf, dato);
             txtcantidad_producto.setText("1");
             txtobservacion_ingre.setText(null);
@@ -575,7 +588,7 @@ public class FrmVenta extends javax.swing.JInternalFrame {
     }
 
     void actualizar_tabla_ingrediente() {
-        if (evejt.getString_select(tblitem_producto, 1).equals("P")) {
+        if (evejt.getString_select(tblitem_producto, 1).equals(item.getTipo_producto())) {
             grupo_en_ingrediente = evejt.getString_select(tblitem_producto, 6);
             int idproducto = evejt.getInt_select_id(tblitem_producto);
             evejt.mostrar_JTabbedPane(jTab_producto_ingrediente, 1);
@@ -586,10 +599,10 @@ public class FrmVenta extends javax.swing.JInternalFrame {
             lblnombre_producto_ingre.setText(descripcion);
             txtobservacion_ingre.grabFocus();
         }
-        if (evejt.getString_select(tblitem_producto, 1).equals("I")) {
+        if (evejt.getString_select(tblitem_producto, 1).equals(item.getTipo_ingrediente())) {
             evejt.mostrar_JTabbedPane(jTab_producto_ingrediente, 0);
         }
-        if (evejt.getString_select(tblitem_producto, 1).equals("N")) {
+        if (evejt.getString_select(tblitem_producto, 1).equals(item.getTipo_producto_stock())) {
             evejt.mostrar_JTabbedPane(jTab_producto_ingrediente, 0);
         }
     }
@@ -834,13 +847,13 @@ public class FrmVenta extends javax.swing.JInternalFrame {
     void boton_eliminar_item() {
         if (!evejt.getBoolean_validar_select(tblitem_producto)) {
             String tipo = evejt.getString_select(tblitem_producto, 1);
-            if (tipo.equals("I") || tipo.equals("D") || tipo.equals("S")) {
+            if (tipo.equals(item.getTipo_ingrediente()) || tipo.equals(item.getTipo_delivery()) || tipo.equals(item.getTipo_descontar())) {
                 if (evejt.getBoolean_Eliminar_Fila(tblitem_producto, model_itemf)) {
                     sumar_item_venta();
                     evejt.mostrar_JTabbedPane(jTab_producto_ingrediente, 0);
                 }
             }
-            if (tipo.equals("P") || tipo.equals("N")) {
+            if (tipo.equals(item.getTipo_producto()) || tipo.equals(item.getTipo_producto_stock())) {
                 if (evejt.getBoolean_Eliminar_Fila_subfila(tblitem_producto, model_itemf)) {
                     sumar_item_venta();
                     evejt.mostrar_JTabbedPane(jTab_producto_ingrediente, 0);
@@ -902,13 +915,13 @@ public class FrmVenta extends javax.swing.JInternalFrame {
         int cant_registro = 0;
         for (int fila = 0; fila < tblitem_producto.getRowCount(); fila++) {
             String tipo = (tblitem_producto.getModel().getValueAt(fila, 1).toString());
-            if (tipo.equals("P")) {
+            if (tipo.equals(item.getTipo_producto())) {
                 cant_registro++;
                 String descripcion = (tblitem_producto.getModel().getValueAt(fila, 2).toString());
                 String cantidad = (tblitem_producto.getModel().getValueAt(fila, 4).toString());
                 comanda = comanda + "(" + cantidad + ")>" + eveut.getString_salto_de_linea(descripcion) + salto;
             }
-            if (tipo.equals("I")) {
+            if (tipo.equals(item.getTipo_ingrediente())) {
                 cant_registro++;
                 String descripcion = (tblitem_producto.getModel().getValueAt(fila, 2).toString());
                 comanda = comanda + "->" + eveut.getString_salto_de_linea(descripcion) + salto;
@@ -921,7 +934,7 @@ public class FrmVenta extends javax.swing.JInternalFrame {
     }
 
     void cargar_datos_venta() {
-        monto_delivery = evejt.getDouble_monto_validado(tblitem_producto, 5, 1, "D");
+        monto_delivery = evejt.getDouble_monto_validado(tblitem_producto, 5, 1, item.getTipo_delivery());
         boolean delivery = false;
         if (monto_delivery > 0) {
             delivery = true;
@@ -1072,7 +1085,7 @@ public class FrmVenta extends javax.swing.JInternalFrame {
     void boton_pasar_cocina() {
         if (!evejt.getBoolean_validar_select(tblventa)) {
             if (evemen.MensajeGeneral_warning("ESTAS SEGURO DE PASAR A COCINA", "PASAR A COCINA", "COCINA", "CANCELAR")) {
-                ven.setC5estado("EMITIDO");
+                ven.setC5estado(estado_ven_EMITIDO);
                 String indice = evejt.getString_select(tblventa, 1);
                 ven.setC15indice(indice);
                 vBO.update_estado_pasar_cocina(connLocal, ven);
@@ -1083,7 +1096,7 @@ public class FrmVenta extends javax.swing.JInternalFrame {
 
     void boton_estado_venta_terminar() {
         if (!evejt.getBoolean_validar_select(tblventa)) {
-            ven.setC5estado("TERMINADO");
+            ven.setC5estado(estado_ven_TERMINADO);
             int idventa = evejt.getInt_select_id(tblventa);
             ven.setC1idventa(idventa);
             vBO.update_estado_venta(connLocal, ven);
@@ -1151,10 +1164,10 @@ public class FrmVenta extends javax.swing.JInternalFrame {
                 int idventa = evejt.getInt_select_id(tblventa);
                 String estado = evejt.getString_select(tblventa, 7);
                 String pago = evejt.getString_select(tblventa, 9);
-                if (estado.equals("TERMINADO")) {
-                    ven.setC5estado("ANULADO");
+                if (estado.equals(estado_ven_TERMINADO)) {
+                    ven.setC5estado(estado_ven_ANULADO);
                 } else {
-                    ven.setC5estado("ANULADO_temp");
+                    ven.setC5estado(estado_ven_ANULADO_temp);
                 }
                 ven.setC1idventa(idventa);
                 caja.setC10tabla_origen("VENTA_" + pago);//VENTA_EFECTIVO Y VENTA_TARJETA
@@ -1373,7 +1386,7 @@ public class FrmVenta extends javax.swing.JInternalFrame {
             int idventa = evejt.getInt_select_id(tblventa);
             item.setC7fk_idventa(idventa);
             vdao.cargar_venta(ven, idventa);
-            if (ven.getC5estado().equals("EMITIDO")) {
+            if (ven.getC5estado().equals(estado_ven_EMITIDO)) {
                 btnterminarcomanda.setEnabled(true);
                 btncocina.setEnabled(false);
                 btnanularventa.setEnabled(true);
@@ -1381,7 +1394,7 @@ public class FrmVenta extends javax.swing.JInternalFrame {
                 txtpagado_tarjeta.setEnabled(true);
                 btncambiar_monto_pago.setEnabled(true);
             }
-            if (ven.getC5estado().equals("TERMINADO")) {
+            if (ven.getC5estado().equals(estado_ven_TERMINADO)) {
                 btnterminarcomanda.setEnabled(false);
                 btncocina.setEnabled(true);
                 btnanularventa.setEnabled(true);
@@ -1389,7 +1402,7 @@ public class FrmVenta extends javax.swing.JInternalFrame {
                 txtpagado_tarjeta.setEnabled(true);
                 btncambiar_monto_pago.setEnabled(true);
             }
-            if (ven.getC5estado().equals("ANULADO")) {
+            if (ven.getC5estado().equals(estado_ven_ANULADO)) {
                 btnterminarcomanda.setEnabled(false);
                 btncocina.setEnabled(false);
                 btnanularventa.setEnabled(false);
@@ -1397,7 +1410,7 @@ public class FrmVenta extends javax.swing.JInternalFrame {
                 txtpagado_tarjeta.setEnabled(false);
                 btncambiar_monto_pago.setEnabled(false);
             }
-            if (ven.getC5estado().equals("ANULADO_temp")) {
+            if (ven.getC5estado().equals(estado_ven_ANULADO_temp)) {
                 btnterminarcomanda.setEnabled(false);
                 btncocina.setEnabled(false);
                 btnanularventa.setEnabled(false);

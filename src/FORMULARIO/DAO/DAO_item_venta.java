@@ -34,8 +34,8 @@ public class DAO_item_venta {
     private String mensaje_insert = " GUARDADO CORRECTAMENTE";
     private String sql_insert = "INSERT INTO public.item_venta(\n"
             + "            iditem_venta, descripcion, precio_venta, precio_compra, cantidad, \n"
-            + "            tipo, fk_idventa, fk_idproducto,grupo)\n"
-            + "    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+            + "            tipo, fk_idventa, fk_idproducto,grupo,iva)\n"
+            + "    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?);";
     private String sql_select = "select descripcion,"
             + "TRIM(to_char(precio_venta,'999G999G999')) as precio,cantidad as ca,"
             + "TRIM(to_char((precio_venta*cantidad),'999G999G999')) as total "
@@ -56,6 +56,7 @@ public class DAO_item_venta {
             pst.setInt(7, item.getC7fk_idventa());
             pst.setInt(8, item.getC8fk_idproducto());
             pst.setInt(9, item.getC9grupo());
+            pst.setDouble(10, item.getC10iva());
             pst.execute();
             pst.close();
             evemen.Imprimir_serial_sql(sql_insert + "\n" + item.toString(), titulo);
@@ -73,6 +74,7 @@ public class DAO_item_venta {
             String precio_venta = ((tblitem_producto.getModel().getValueAt(row, 3).toString()));
             String cantidad = ((tblitem_producto.getModel().getValueAt(row, 4).toString()));
             String grupo = ((tblitem_producto.getModel().getValueAt(row, 6).toString()));
+            String iva = ((tblitem_producto.getModel().getValueAt(row, 7).toString()));
             try {
                 producto prod = new producto();
                 pdao.cargar_producto(prod, Integer.parseInt(idproducto));
@@ -84,8 +86,9 @@ public class DAO_item_venta {
                 item.setC7fk_idventa(ven.getC1idventa_estatico());
                 item.setC8fk_idproducto(Integer.parseInt(idproducto));
                 item.setC9grupo(Integer.parseInt(grupo));
+                item.setC10iva(Double.parseDouble(iva));
                 insertar_item_venta(conn, item);
-                if(tipo.equals("N") || tipo.equals("P")){
+                if(tipo.equals(item.getTipo_producto_stock()) || tipo.equals(item.getTipo_producto())){
                     if(prod.isP9descontar_stock()){
                         prod.setP15cantidad(Double.parseDouble(cantidad));
                         prod.setP1idproducto(Integer.parseInt(idproducto));
@@ -108,6 +111,7 @@ public class DAO_item_venta {
         evejt.setAnchoColumnaJtable(tblitem_producto_filtro, Ancho);
     }
     public void recargar_stock_producto(Connection conn, venta ven) {
+        item_venta item=new item_venta();
         String titulo = "recargar_stock_producto";
         String sql = "select fk_idproducto,cantidad,tipo "
                 + "from item_venta "
@@ -120,7 +124,7 @@ public class DAO_item_venta {
                 String tipo = rs.getString("tipo");
                 producto prod = new producto();
                 pdao.cargar_producto(prod,fk_idproducto);
-                if(tipo.equals("N") || tipo.equals("P")){
+                if(tipo.equals(item.getTipo_producto_stock()) || tipo.equals(item.getTipo_producto())){
                     if(prod.isP9descontar_stock()){
                         prod.setP15cantidad(cantidad);
                         prod.setP1idproducto(fk_idproducto);

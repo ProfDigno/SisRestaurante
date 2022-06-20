@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JInternalFrameFormInfo">
+  <Properties>
+    <Property name="closable" type="boolean" value="true"/>
+  </Properties>
+  <SyntheticProperties>
+    <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
+  </SyntheticProperties>
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Component id="jTabbedPane1" alignment="0" max="32767" attributes="0"/>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Component id="jTabbedPane1" alignment="0" max="32767" attributes="0"/>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Container class="javax.swing.JTabbedPane" name="jTabbedPane1">
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
+      <SubComponents>
+        <Container class="javax.swing.JPanel" name="jPanel1">
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+              <JTabbedPaneConstraints tabName="TRUNCAR TABLA">
+                <Property name="tabTitle" type="java.lang.String" value="TRUNCAR TABLA"/>
+              </JTabbedPaneConstraints>
+            </Constraint>
+          </Constraints>
+
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jPanel3" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="btnejecutar_truncate" pref="237" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jPanel2" max="32767" attributes="0"/>
+                          <Component id="jPanel3" max="32767" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="btnejecutar_truncate" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+          </Layout>
+          <SubComponents>
+            <Container class="javax.swing.JPanel" name="jPanel2">
+              <Properties>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
+                    <TitledBorder title="TABLAS"/>
+                  </Border>
+                </Property>
+              </Properties>
+
+              <Layout>
+                <DimensionLayout dim="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="jCtimbrado" alignment="0" max="32767" attributes="0"/>
+                              <Group type="102" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="jCventa" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jCventa_mesa" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jCitem_venta" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jCitem_venta_mesa" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jCitem_venta_mesa_venta" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jCfactura" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jCitem_factura" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jCfactura_autoimpresor" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jCitem_factura_auto" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jCitem_timbrado" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jCgasto" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jCtipo_gasto" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jCproducto" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jCproducto_categoria" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jCproducto_grupo" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jCproducto_ingrediente" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jCproducto_unidad" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+                <DimensionLayout dim="1">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="1" attributes="0">
+                          <Component id="jCventa" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jCitem_venta" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jCventa_mesa" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jCitem_venta_mesa" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jCitem_venta_mesa_venta" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jCfactura" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jCitem_factura" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="jCfactura_autoimpresor" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jCitem_factura_auto" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jCtimbrado" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jCitem_timbrado" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jCgasto" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jCtipo_gasto" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jCproducto" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jCproducto_categoria" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jCproducto_grupo" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jCproducto_ingrediente" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jCproducto_unidad" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace pref="9" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+              </Layout>
+              <SubComponents>
+                <Component class="javax.swing.JCheckBox" name="jCventa">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="VENTA"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="jCventa_mesa">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="VENTA MESA"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="jCitem_venta">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="ITEM VENTA"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="jCitem_venta_mesa">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="ITEM VENTA MESA"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="jCitem_venta_mesa_venta">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="ITEM VENTA MESA VENTA"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="jCfactura">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="FACTURA"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="jCitem_factura">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="ITEM FACTURA"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="jCfactura_autoimpresor">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="FACTURA AUTOIMPRESOR"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="jCitem_factura_auto">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="ITEM FACTURA AUTO"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="jCtimbrado">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="TIMBRADO"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="jCitem_timbrado">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="ITEM TIMBRADO"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="jCgasto">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="GASTO"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="jCtipo_gasto">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="TIPO GASTO"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="jCproducto">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="PRODUCTO"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="jCproducto_categoria">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="PRODUCTO CATEGORIA"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="jCproducto_grupo">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="PRODUCTO GRUPO"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="jCproducto_ingrediente">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="PRODUCTO INGREDIENTE"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="jCproducto_unidad">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="PRODUCTO UNIDAD"/>
+                  </Properties>
+                </Component>
+              </SubComponents>
+            </Container>
+            <Container class="javax.swing.JPanel" name="jPanel3">
+              <Properties>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
+                    <TitledBorder title="TABLAS"/>
+                  </Border>
+                </Property>
+              </Properties>
+
+              <Layout>
+                <DimensionLayout dim="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="jCitemven_insumo" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="jCproveedor" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="jCusuario" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="jCinsumo_producto" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="jCinsumo_categoria" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="jCinsumo_unidad" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="jCinsumo_item_producto" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="jCitem_producto_ingrediente" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="jCitem_compra" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="jCitem_compra_insumo" alignment="0" min="-2" pref="151" max="-2" attributes="0"/>
+                              <Component id="jCcliente" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="jCzona_delivery" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="jCcaja_cierre" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="jCitem_caja_cierre" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="jCcaja_detalle" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="jCcajero" alignment="0" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+                <DimensionLayout dim="1">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="jCinsumo_producto" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jCinsumo_categoria" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jCinsumo_unidad" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jCinsumo_item_producto" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jCitem_producto_ingrediente" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jCitemven_insumo" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jCitem_compra" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jCitem_compra_insumo" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jCproveedor" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jCcliente" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jCzona_delivery" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jCcaja_cierre" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jCitem_caja_cierre" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jCcaja_detalle" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jCusuario" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jCcajero" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+              </Layout>
+              <SubComponents>
+                <Component class="javax.swing.JCheckBox" name="jCitem_producto_ingrediente">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="ITEM PRODUCTO INGREDIENTE"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="jCitemven_insumo">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="ITEMVEN INSUMO"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="jCproveedor">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="PROVEEDOR"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="jCusuario">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="USUARIO"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="jCinsumo_producto">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="INSUMO PRODUCTO"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="jCinsumo_categoria">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="INSUMO CATEGORIA"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="jCinsumo_unidad">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="INSUMO UNIDAD"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="jCinsumo_item_producto">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="INSUMO ITEM PRODUCTO"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="jCitem_compra">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="ITEM COMPRA"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="jCitem_compra_insumo">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="ITEM COMPRA INSUMO"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="jCcliente">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="CLIENTE"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="jCzona_delivery">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="ZONA DELIVERY"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="jCcaja_cierre">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="CAJA CIERRE"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="jCitem_caja_cierre">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="ITEM CAJA CIERRE"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="jCcaja_detalle">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="CAJA DETALLE"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="jCcajero">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="CAJERO"/>
+                  </Properties>
+                </Component>
+              </SubComponents>
+            </Container>
+            <Component class="javax.swing.JButton" name="btnejecutar_truncate">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="EJECUTAR TRUNCATE"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnejecutar_truncateActionPerformed"/>
+              </Events>
+            </Component>
+          </SubComponents>
+        </Container>
+      </SubComponents>
+    </Container>
+  </SubComponents>
+</Form>

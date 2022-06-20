@@ -185,7 +185,7 @@ public class DAO_factura_autoimpresor {
                 + "and fa.fk_idcliente=cl.idcliente  \n"
                 + "and fa.idfactura_autoimpresor=ifa.fk_idfactura_autoimpresor \n"
                 + "and fa.idfactura_autoimpresor="+idfactura_autoimpresor
-                + " order by ifa.descripcion desc;";
+                + " order by ifa.iditem_factura_auto asc;";
         String direccion="src/REPORTE/FACTURA/repFacturaTicket.jrxml";
         String titulo="FACTURA TICKET";
         int tamano_detalle=30;

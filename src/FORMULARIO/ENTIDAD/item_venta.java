@@ -46,12 +46,73 @@ public class item_venta {
     private int c7fk_idventa;
     private int c8fk_idproducto;
     private int c9grupo;
+    private double c10iva;
+    public static String tipo_producto;
+    public static String tipo_producto_stock;
+    public static String tipo_ingrediente;
+    public static String tipo_delivery;
+    public static String tipo_descontar;
+    public static String tipo_observacion;
     private static String tabla;
     private static String idtabla;
 
     public item_venta() {
         setTabla("item_venta");
         setIdtabla("iditem_venta");
+        setTipo_producto("P");
+        setTipo_ingrediente("I");
+        setTipo_observacion("I");
+        setTipo_descontar("S");
+        setTipo_delivery("D");
+        setTipo_producto_stock("N");
+    }
+
+    public static String getTipo_producto_stock() {
+        return tipo_producto_stock;
+    }
+
+    public static void setTipo_producto_stock(String tipo_producto_stock) {
+        item_venta.tipo_producto_stock = tipo_producto_stock;
+    }
+
+    public static String getTipo_producto() {
+        return tipo_producto;
+    }
+
+    public static void setTipo_producto(String tipo_producto) {
+        item_venta.tipo_producto = tipo_producto;
+    }
+
+    public static String getTipo_ingrediente() {
+        return tipo_ingrediente;
+    }
+
+    public static void setTipo_ingrediente(String tipo_ingrediente) {
+        item_venta.tipo_ingrediente = tipo_ingrediente;
+    }
+
+    public static String getTipo_delivery() {
+        return tipo_delivery;
+    }
+
+    public static void setTipo_delivery(String tipo_delivery) {
+        item_venta.tipo_delivery = tipo_delivery;
+    }
+
+    public static String getTipo_descontar() {
+        return tipo_descontar;
+    }
+
+    public static void setTipo_descontar(String tipo_descontar) {
+        item_venta.tipo_descontar = tipo_descontar;
+    }
+
+    public static String getTipo_observacion() {
+        return tipo_observacion;
+    }
+
+    public static void setTipo_observacion(String tipo_observacion) {
+        item_venta.tipo_observacion = tipo_observacion;
     }
 
     public int getC1iditem_venta() {
@@ -132,6 +193,14 @@ public class item_venta {
 
     public static void setIdtabla(String idtabla) {
         item_venta.idtabla = idtabla;
+    }
+
+    public double getC10iva() {
+        return c10iva;
+    }
+
+    public void setC10iva(double c10iva) {
+        this.c10iva = c10iva;
     }
 
     @Override

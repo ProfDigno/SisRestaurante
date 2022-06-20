@@ -54,6 +54,7 @@ public class DAO_producto {
             + "  FROM producto p,producto_categoria pc,producto_unidad pu\n"
             + "  where p.fk_idproducto_categoria=pc.idproducto_categoria\n"
             + "  and p.fk_idproducto_unidad=pu.idproducto_unidad\n"
+            + "  and pc.activar=true \n"
             + "  order by pc.nombre asc,pu.nombre asc";
     private String sql_cargar = "SELECT p.idproducto, p.nombre, p.precio_venta, p.precio_compra, p.stock, p.orden, \n"
             + "       p.activar, p.cocina, p.descontar_stock, p.comprar, p.vender, p.fk_idproducto_categoria, \n"

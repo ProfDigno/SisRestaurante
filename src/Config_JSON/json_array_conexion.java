@@ -7,6 +7,7 @@ package Config_JSON;
 
 import CONFIGURACION.ComputerInfo;
 import Evento.Fecha.EvenFecha;
+import Evento.Mensaje.EvenMensajeJoptionpane;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.FileReader;
@@ -26,6 +27,7 @@ public class json_array_conexion {
 
     private String ruta_json = "JSON\\json_array_conexion.json";
     EvenFecha evefec = new EvenFecha();
+    private EvenMensajeJoptionpane evemen=new EvenMensajeJoptionpane();
     private json_config_json jsoncf=new json_config_json();
     ComputerInfo pcinf=new ComputerInfo();
     private static String nombre;
@@ -38,6 +40,7 @@ public class json_array_conexion {
     private static String direc_dump;
     private static String direc_backup;
     private static String nombre_backup;
+    private static String limite_dia_eliminar;
     private static String crear_backup;
     public void cargar_jsom_array() {
          MacAddress_maquina=pcinf.getMacAddress();
@@ -60,6 +63,7 @@ public class json_array_conexion {
              direc_dump = (String) jsonObject_conexion.get("direc_dump");
              direc_backup = (String) jsonObject_conexion.get("direc_backup");
              nombre_backup = (String) jsonObject_conexion.get("nombre_backup");
+             limite_dia_eliminar = (String) jsonObject_conexion.get("limite_dia_eliminar");
              crear_backup = (String) jsonObject_conexion.get("crear_backup");
             System.out.println(MacAddress_maquina);
             System.out.println(nombre);
@@ -71,15 +75,19 @@ public class json_array_conexion {
             System.out.println(direc_dump);
             System.out.println(direc_backup);
             System.out.println(nombre_backup);
+            System.out.println(limite_dia_eliminar);
             System.out.println(crear_backup);
         } catch (Exception ex) {
             System.err.println("Error: " + ex.toString()+"\nNombre Maquina:"+MacAddress_maquina);
             JOptionPane.showMessageDialog(null, "Error: " + ex.toString()+"\nNombre Maquina:"+MacAddress_maquina);
+            if(evemen.MensajeGeneral_warning("DESEA ABRIR EL ARCHIVO PARA CAMBIAR EL MAC PARA ESTE EQUIPO","ABRIR JSON","ABRIR","CANCELAR")){
+                abrir_este_json();
+            }
         } finally {
 
         }
     }
-public void abrir_config_formulario(){
+    public void abrir_este_json(){
         jsoncf.abrirArchivo(ruta_json);
     }
 
@@ -169,6 +177,14 @@ public void abrir_config_formulario(){
 
     public static void setCrear_backup(String crear_backup) {
         json_array_conexion.crear_backup = crear_backup;
+    }
+
+    public static String getLimite_dia_eliminar() {
+        return limite_dia_eliminar;
+    }
+
+    public static void setLimite_dia_eliminar(String limite_dia_eliminar) {
+        json_array_conexion.limite_dia_eliminar = limite_dia_eliminar;
     }
 
 }

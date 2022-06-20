@@ -223,6 +223,7 @@ public class EvenConexion {
         try {
             PreparedStatement pst = conn.prepareStatement(sql);
             pst.execute();
+            conn.commit();
             evmen.Imprimir_serial_sql(sql, titulo);
         } catch (Exception e) {
             evmen.Imprimir_serial_sql_error(e, sql, titulo);

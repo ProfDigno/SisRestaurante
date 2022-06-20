@@ -54,7 +54,7 @@ public class FrmProducto_grupo extends javax.swing.JInternalFrame {
     void boton_guardar() {
         if (validar_guardar()) {
             int idpgru = eveconn.getInt_ultimoID_max(conn, "producto_grupo", "idproducto_grupo");
-            if (idpgru < 1) {
+            if (idpgru < 2) {
                 unid.setC2nombre(txtnombre.getText());
                 uBO.insertar_producto_grupo(unid, tblpro_grupo);
                 reestableser();

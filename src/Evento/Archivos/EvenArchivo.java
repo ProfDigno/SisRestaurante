@@ -5,6 +5,7 @@
  */
 package Evento.Archivos;
 
+import Config_JSON.json_array_conexion;
 import Evento.Mensaje.EvenMensajeJoptionpane;
 import java.awt.Desktop;
 import java.io.File;
@@ -19,8 +20,9 @@ import java.util.Date;
 public class EvenArchivo {
 
     EvenMensajeJoptionpane evemen = new EvenMensajeJoptionpane();
-    int limite_dia_eliminar=-5;
-
+    json_array_conexion jscon=new json_array_conexion();
+//    int dias=Integer.parseInt(jscon.getLimite_dia_eliminar());
+    int limite_dia_eliminar=-3;   
     public void eliminar_archivos_de_carpeta_fechalimite(String ruta) {
         String titulo = "eliminar_archivos_de_carpeta_fechalimite";
         try {

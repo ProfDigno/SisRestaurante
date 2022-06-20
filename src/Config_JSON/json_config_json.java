@@ -44,4 +44,16 @@ public class json_config_json {
             }
         }
     }
+    public boolean getboo_ejecutar_por_password() {
+        boolean ejecutar=false;
+        String pass = JOptionPane.showInputDialog(null, "PARA EJECUTAR SE NECESITA PASSWORD\n", "PASSWORD", JOptionPane.ERROR_MESSAGE);
+        if (pass != null) {
+            if (pass.equals(getPassword())) {
+                ejecutar=true;
+            } else {
+                JOptionPane.showMessageDialog(null, "PASSWORD INCORRECTO ", "ERROR DE PASSWORD", JOptionPane.WARNING_MESSAGE);
+            }
+        }
+        return ejecutar;
+    }
 }
