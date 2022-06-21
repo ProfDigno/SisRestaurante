@@ -35,42 +35,42 @@ import javax.swing.JTextField;
  */
 public class DAO_comanda {
 
-    private int tiempo_amarillo = 10;
-    private int tiempo_anaranjado = 20;
-    private int tiempo_azul = 30;
-    private int tiempo_rosado = 40;
-    private int tiempo_gris = 50;
+    private int tiempo_nivel_1 = 10;
+    private int tiempo_nivel_2 = 20;
+    private int tiempo_nivel_3 = 30;
+    private int tiempo_nivel_4 = 40;
+    private int tiempo_nivel_5 = 50;
 //    static int tiempo_terminado = JSconfig.getTiempo_max_emitido();
-    private Color co_amarillo = new Color(223, 247, 103);
-    private Color co_naranja = new Color(233, 105, 109);
-    private Color co_azul = Color.GRAY;
-    private Color co_rosado = Color.GRAY;
-    private Color co_rojo = new Color(233, 48, 52);
-    private Color co_gris = Color.GRAY;
+    private Color color_nivel_1 = new Color(223, 247, 103);
+    private Color color_nivel_2= new Color(233, 105, 109);
+    private Color color_nivel_3 = Color.GRAY;
+    private Color color_nivel_4 = Color.GRAY;
+    private Color color_nivel_5 = Color.GRAY;
+    private Color color_nivel_6=  new Color(233, 48, 52);
 
     public void color_campo_amarillo(JTextField txttiempo_amarillo) {
-        txttiempo_amarillo.setText(String.valueOf(tiempo_amarillo));
-        txttiempo_amarillo.setBackground(co_amarillo);
+        txttiempo_amarillo.setText(String.valueOf(tiempo_nivel_1));
+        txttiempo_amarillo.setBackground(color_nivel_1);
     }
 
     public void color_campo_anaranjado(JTextField txttiempo_anaranjado) {
-        txttiempo_anaranjado.setText(String.valueOf(tiempo_anaranjado));
-        txttiempo_anaranjado.setBackground(co_naranja);
+        txttiempo_anaranjado.setText(String.valueOf(tiempo_nivel_2));
+        txttiempo_anaranjado.setBackground(color_nivel_2);
     }
 
     public void color_campo_azul(JTextField txttiempo_azul) {
-        txttiempo_azul.setText(String.valueOf(tiempo_azul));
-        txttiempo_azul.setBackground(co_azul);
+        txttiempo_azul.setText(String.valueOf(tiempo_nivel_3));
+        txttiempo_azul.setBackground(color_nivel_3);
     }
 
     public void color_campo_rosado(JTextField txttiempo_rosado) {
-        txttiempo_rosado.setText(String.valueOf(tiempo_rosado));
-        txttiempo_rosado.setBackground(co_rosado);
+        txttiempo_rosado.setText(String.valueOf(tiempo_nivel_4));
+        txttiempo_rosado.setBackground(color_nivel_4);
     }
 
     public void color_campo_gris(JTextField txttiempo_gris) {
-        txttiempo_gris.setText(String.valueOf(tiempo_gris));
-        txttiempo_gris.setBackground(co_gris);
+        txttiempo_gris.setText(String.valueOf(tiempo_nivel_5));
+        txttiempo_gris.setBackground(color_nivel_5);
     }
 
     /**
@@ -131,26 +131,26 @@ public class DAO_comanda {
         area_local = new JTextArea(suma_comanda);
         panelcomanda.add(area_local);
         textarea.add(area_local);
-        if (tiempo_sql < (tiempo_amarillo * 60)) {
+        if (tiempo_sql < (tiempo_nivel_1 * 60)) {
             color_panel_area(row, area_local, Color.WHITE, Color.BLACK);
         }
-        if (tiempo_sql > (tiempo_amarillo * 60) && tiempo_sql <= (tiempo_anaranjado * 60)) {
-            color_panel_area(row, area_local, co_amarillo, Color.BLACK);
+        if (tiempo_sql > (tiempo_nivel_1 * 60) && tiempo_sql <= (tiempo_nivel_2 * 60)) {
+            color_panel_area(row, area_local, color_nivel_1, Color.BLACK);
         }
-        if (tiempo_sql > (tiempo_anaranjado * 60) && tiempo_sql <= (tiempo_azul * 60)) {
-            color_panel_area(row, area_local, co_naranja, Color.BLACK);
+        if (tiempo_sql > (tiempo_nivel_2 * 60) && tiempo_sql <= (tiempo_nivel_3 * 60)) {
+            color_panel_area(row, area_local, color_nivel_3, Color.BLACK);
         }
-        if (tiempo_sql > (tiempo_azul * 60) && tiempo_sql <= (tiempo_rosado * 60)) {
-            color_panel_area(row, area_local, co_azul, Color.BLACK);
+        if (tiempo_sql > (tiempo_nivel_3 * 60) && tiempo_sql <= (tiempo_nivel_4 * 60)) {
+            color_panel_area(row, area_local, color_nivel_3, Color.BLACK);
         }
-        if (tiempo_sql > (tiempo_rosado * 60) && tiempo_sql <= (tiempo_gris * 60)) {
-            color_panel_area(row, area_local, co_rosado, Color.BLACK);
+        if (tiempo_sql > (tiempo_nivel_4 * 60) && tiempo_sql <= (tiempo_nivel_5 * 60)) {
+            color_panel_area(row, area_local, color_nivel_4, Color.BLACK);
         }
-        if (tiempo_sql >= (tiempo_gris * 60)) {
-            color_panel_area(row, area_local, co_gris, Color.WHITE);
+        if (tiempo_sql >= (tiempo_nivel_5 * 60)) {
+            color_panel_area(row, area_local, color_nivel_5, Color.WHITE);
         }
         if (es_anulado) {
-            color_panel_area(row, area_local, co_rojo, Color.WHITE);
+            color_panel_area(row, area_local, color_nivel_6, Color.WHITE);
             setColor_panel_anulado(true);
         }
     }
@@ -201,7 +201,7 @@ public class DAO_comanda {
                     + "(v.estado='ANULADO_temp') as anulado,v.indice,c.nombre as cliente,c.direccion \n "
                     + "from venta v,cliente c \n"
                     + "where v.fk_idcliente=c.idcliente \n"
-                    + "and (date(v.fecha_inicio)=(date('" + fecha + "')))\n"
+                    + "and (date(v.fecha_inicio)=(current_date))\n"
                     + "and (v.estado='EMITIDO' or v.estado='ANULADO_temp' ) \n"
                     + "and v.comanda!='nada'\n"
                     + "order by v.idventa desc;";

@@ -12,6 +12,7 @@ import Config_JSON.json_array_conexion;
 import Evento.Color.cla_color_pelete;
 import Evento.JTextField.EvenJTextField;
 import Evento.Jframe.EvenJFRAME;
+import Evento.Mensaje.EvenMensajeJoptionpane;
 import FORMULARIO.BO.BO_usuario;
 import FORMULARIO.DAO.DAO_backup;
 import FORMULARIO.DAO.DAO_caja_cierre;
@@ -39,6 +40,7 @@ public class JDiaLogin extends javax.swing.JDialog {
     DAO_backup bdao = new DAO_backup();
     DAO_venta vdao = new DAO_venta();
     EvenJTextField evejtf = new EvenJTextField();
+    EvenMensajeJoptionpane evenmen=new EvenMensajeJoptionpane();
     Connection conn = ConnPostgres.getConnPosgres();
 //    ConnPostgres_SER conPsSER = new ConnPostgres_SER();
 //    Connection connser = conPsSER.getConnPosgres();
@@ -188,6 +190,14 @@ public class JDiaLogin extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setBackground(new java.awt.Color(102, 204, 255));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         panel_insert.setBackground(new java.awt.Color(153, 204, 255));
         panel_insert.setBorder(javax.swing.BorderFactory.createTitledBorder("INGRESO DE USUARIO"));
@@ -313,6 +323,17 @@ public class JDiaLogin extends javax.swing.JDialog {
         // TODO add your handling code here:
         boton_venta();
     }//GEN-LAST:event_btnventaActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        // TODO add your handling code here:
+    }//GEN-LAST:event_formWindowOpened
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+        if(evenmen.MensajeGeneral_question("DESEAS SALIR DEL SISTEMA","SALIR", "ACEPTAR", "CANCELAR")){
+            System.exit(0);
+        }
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments

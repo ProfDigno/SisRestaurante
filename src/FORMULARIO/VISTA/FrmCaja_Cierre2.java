@@ -85,7 +85,7 @@ public class FrmCaja_Cierre2 extends javax.swing.JInternalFrame {
     void ocultar_campos() {
 //        Color color_campo=new Color(0,0,0);
 //        if (usu.getGlobal_nivel().equals("ADMIN")) {
-           Color color_campo=new Color(254,254,254);
+        Color color_campo = new Color(254, 254, 254);
 //        }
         txtcant_caja.setBackground(color_campo);
         txtcant_compra.setBackground(color_campo);
@@ -174,7 +174,8 @@ public class FrmCaja_Cierre2 extends javax.swing.JInternalFrame {
             evemen.mensaje_error(e, sql, titulo);
         }
     }
-    void caja_detalle_cantidad_total_venta( String campo_total, JTextField txtcantidad, JFormattedTextField jftotal) {
+
+    void caja_detalle_cantidad_total_venta(String campo_total, JTextField txtcantidad, JFormattedTextField jftotal) {
         String titulo = "caja_detalle_cantidad_total";
         String sql = "select count(*) as cantidad,sum(" + campo_total + ") as total\n"
                 + " from caja_detalle c \n"
@@ -192,7 +193,8 @@ public class FrmCaja_Cierre2 extends javax.swing.JInternalFrame {
             evemen.mensaje_error(e, sql, titulo);
         }
     }
-void caja_detalle_cantidad_total_delivery(String campo_total, JTextField txtcantidad, JFormattedTextField jftotal) {
+
+    void caja_detalle_cantidad_total_delivery(String campo_total, JTextField txtcantidad, JFormattedTextField jftotal) {
         String titulo = "caja_detalle_cantidad_total";
         String sql = "select count(*) as cantidad,sum(" + campo_total + ") as total\n"
                 + " from caja_detalle c \n"
@@ -230,7 +232,8 @@ void caja_detalle_cantidad_total_delivery(String campo_total, JTextField txtcant
 //            evemen.mensaje_error(e, sql, titulo);
 //        }
 //    }
- void caja_detalle_SALDO() {
+
+    void caja_detalle_SALDO() {
         String titulo = "caja_detalle_cantidad_total";
         String sql = "select ((sum(monto_venta_efectivo+monto_venta_tarjeta+monto_caja))-(sum(monto_gasto+monto_compra+monto_vale))) as sis_total, \n"
                 + "((sum(monto_venta_efectivo+monto_venta_tarjeta+monto_caja))-(sum(monto_gasto+monto_compra+monto_vale+monto_delivery))) as sis_sin_deli "
@@ -253,19 +256,21 @@ void caja_detalle_cantidad_total_delivery(String campo_total, JTextField txtcant
             evemen.mensaje_error(e, sql, titulo);
         }
     }
+
     void calcular_diferencia() {
+        if (txtmonto_caja_cierre.getText().trim().length() > 0) {
 //        caja_detalle_CIERRE = evejtf.getDouble_format_nro_entero(txtmonto_caja_cierre);
-        caja_detalle_CIERRE = Double.parseDouble(txtmonto_caja_cierre.getText());
-//        if (usu.getGlobal_nivel().equals("ADMIN")) {
-            
-            caja_detalle_DIFERENCIA = caja_detalle_CIERRE - caja_detalle_SALDO;
-            jFcaja_detalle_DIFERENCIA.setValue(caja_detalle_DIFERENCIA);
-            if (caja_detalle_DIFERENCIA < 0) {
-                jFcaja_detalle_DIFERENCIA.setBackground(Color.red);
-            } else {
-                jFcaja_detalle_DIFERENCIA.setBackground(Color.green);
-            }
-//        }
+            caja_detalle_CIERRE = Double.parseDouble(txtmonto_caja_cierre.getText());
+//            if (usu.getGlobal_nivel().equals("ADMIN")) {
+                caja_detalle_DIFERENCIA = caja_detalle_CIERRE - caja_detalle_SALDO;
+                jFcaja_detalle_DIFERENCIA.setValue(caja_detalle_DIFERENCIA);
+                if (caja_detalle_DIFERENCIA < 0) {
+                    jFcaja_detalle_DIFERENCIA.setBackground(Color.red);
+                } else {
+                    jFcaja_detalle_DIFERENCIA.setBackground(Color.green);
+                }
+//            }
+        }
     }
 
     void cargar_arrayList_caja_abierto() {

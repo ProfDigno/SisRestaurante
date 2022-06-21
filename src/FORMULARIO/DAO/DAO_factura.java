@@ -113,7 +113,8 @@ public class DAO_factura {
                 + "from factura f,factura_fila ff, cliente cl\n"
                 + "where f.fk_idcliente=cl.idcliente and f.idfactura=" + idfactura;
         String titulonota = "FACTURA";
-        String direccion = "src/REPORTE/FACTURA/repNotaFactura.jrxml";
+//        String direccion = "src/REPORTE/FACTURA/repNotaFactura.jrxml";
+        String direccion = "src/REPORTE/FACTURA/repoFacturaQchurron.jrxml";
         rep.imprimirjasper(conn, sql, titulonota, direccion);
     }
 }
