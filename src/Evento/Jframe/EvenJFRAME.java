@@ -5,10 +5,13 @@
  */
 package Evento.Jframe;
 
+import Config_JSON.json_array_conexion;
 import Evento.Mensaje.EvenMensajeJoptionpane;
 import FORMULARIO.VISTA.FrmMenuRestaurante;
 import java.awt.Dimension;
-import javax.swing.JDesktopPane;
+import static java.awt.Frame.MAXIMIZED_BOTH;
+import javax.swing.JFrame;
+//import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
 
 /**
@@ -17,6 +20,8 @@ import javax.swing.JInternalFrame;
  */
 public class EvenJFRAME {
     EvenMensajeJoptionpane evemen = new EvenMensajeJoptionpane();
+    
+    
     public void abrir_TablaJinternal(JInternalFrame formu) {
         FrmMenuRestaurante.escritorio.add(formu);
         formu.setVisible(true);

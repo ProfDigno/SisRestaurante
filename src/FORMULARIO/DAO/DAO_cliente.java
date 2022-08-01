@@ -7,7 +7,7 @@ package FORMULARIO.DAO;
 
 import BASEDATO.LOCAL.ConnPostgres;
 import BASEDATO.EvenConexion;
-import Config_JSON.json_crear_cliente;
+//import Config_JSON.json_crear_cliente;
 import Evento.JasperReport.EvenJasperReport;
 import Evento.Jtable.EvenJtable;
 import Evento.Mensaje.EvenMensajeJoptionpane;
@@ -31,7 +31,7 @@ public class DAO_cliente {
     EvenJtable evejt = new EvenJtable();
     EvenJasperReport rep = new EvenJasperReport();
     EvenMensajeJoptionpane evemen = new EvenMensajeJoptionpane();
-    json_crear_cliente jsCli = new json_crear_cliente();
+//    json_crear_cliente jsCli = new json_crear_cliente();
     private String mensaje_insert = "CLIENTE GUARDADO CORRECTAMENTE";
     private String mensaje_update = "CLIENTE MODIFICADO CORECTAMENTE";
     private String sql_insert = "INSERT INTO public.cliente(\n"
@@ -98,9 +98,9 @@ public class DAO_cliente {
             pst.close();
             evemen.Imprimir_serial_sql(sql_insert + "\n" + clie.toString(), titulo);
             evemen.guardado_correcto(mensaje_insert, msj);
-            if (cargar_json) {
-                jsCli.crear_jsom_cliente(clie);
-            }
+//            if (cargar_json) {
+//                jsCli.crear_jsom_cliente(clie);
+//            }
         } catch (Exception e) {
             evemen.mensaje_error(e, sql_insert + "\n" + clie.toString(), titulo);
         }

@@ -6,9 +6,11 @@
 package IMPRESORA_POS;
 
 import BASEDATO.EvenConexion;
-import Config_JSON.json_config;
-import Config_JSON.json_imprimir_pos;
+//import Config_JSON.json_config;
+import Config_JSON.json_array_imprimir_pos;
 import Evento.Mensaje.EvenMensajeJoptionpane;
+import FORMULARIO.DAO.DAO_empresa;
+import FORMULARIO.ENTIDAD.empresa;
 import br.com.adilson.util.Extenso;
 import br.com.adilson.util.PrinterMatrix;
 import java.io.FileInputStream;
@@ -29,15 +31,17 @@ public class PosImprimir_Compra_insumo {
 
     EvenConexion eveconn = new EvenConexion();
     EvenMensajeJoptionpane evemen = new EvenMensajeJoptionpane();
-    private static json_config config=new json_config();
+//    private static json_config config=new json_config();
     ClaImpresoraPos pos = new ClaImpresoraPos();
-    private static json_imprimir_pos jsprint=new json_imprimir_pos();
+    private empresa ENTemp = new empresa();
+    private DAO_empresa DAOemp = new DAO_empresa();
+    private static json_array_imprimir_pos jsprint=new json_array_imprimir_pos();
     private static String v1_idcompra_insumo = "0";
     private static String v2_fecha = "0";
     private static String v3_usuario = "0";
     private static String v6_monto = "0";
     private static String v7_observacion = "0";
-    private static String tk_nombre_empresa = config.getNombre_sistema();
+    private static String tk_nombre_empresa;
     private static String tk_ruta_archivo = "ticket_compra_insumo.txt";
     private static int dato_vector=500;
     private static String[] iv1_cantidad = new String[dato_vector];
@@ -167,6 +171,8 @@ public class PosImprimir_Compra_insumo {
 
     public void boton_imprimir_pos_compra_insumo(Connection conn, int idcompra_insumo) {
         cargar_datos_compra_insumo(conn, idcompra_insumo);
+        DAOemp.cargar_empresa(conn, ENTemp, 1);
+        tk_nombre_empresa=ENTemp.getC4razon_social();
         crear_mensaje_textarea_y_confirmar();
     }
 }

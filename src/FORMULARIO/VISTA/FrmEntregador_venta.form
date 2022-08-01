@@ -133,7 +133,11 @@
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jFmonto_venta" alignment="0" min="-2" pref="134" max="-2" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="jFmonto_venta" min="-2" pref="134" max="-2" attributes="0"/>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Component id="lblentregador" min="-2" pref="247" max="-2" attributes="0"/>
+                              </Group>
                               <Component id="jFmonto_delivery" alignment="0" min="-2" pref="134" max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -145,18 +149,14 @@
                                   <Component id="txtfecha_desde" min="-2" pref="110" max="-2" attributes="0"/>
                                   <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="jLabel15" alignment="0" min="-2" max="-2" attributes="0"/>
                                       <Group type="102" alignment="0" attributes="0">
                                           <Component id="txtfecha_hasta" min="-2" pref="117" max="-2" attributes="0"/>
                                           <EmptySpace max="-2" attributes="0"/>
                                           <Component id="btnbuscar" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="btnhoy" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="btnmes" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                          <Component id="lblentregador" min="-2" pref="350" max="-2" attributes="0"/>
+                                          <Component id="cmbfecha" min="-2" pref="192" max="-2" attributes="0"/>
                                       </Group>
-                                      <Component id="jLabel15" alignment="0" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
@@ -178,18 +178,19 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="txtfecha_desde" alignment="1" min="-2" max="-2" attributes="0"/>
                       <Component id="txtfecha_hasta" alignment="1" min="-2" max="-2" attributes="0"/>
-                      <Component id="btnbuscar" alignment="1" min="-2" max="-2" attributes="0"/>
-                      <Component id="btnhoy" alignment="1" min="-2" max="-2" attributes="0"/>
-                      <Component id="btnmes" alignment="1" min="-2" max="-2" attributes="0"/>
-                      <Component id="lblentregador" alignment="1" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" alignment="1" groupAlignment="3" attributes="0">
+                          <Component id="btnbuscar" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="cmbfecha" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jScrollPane2" pref="0" max="32767" attributes="0"/>
+                  <Component id="jScrollPane2" pref="363" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="btnimp_venta_deli" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jFmonto_venta" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblentregador" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -274,22 +275,6 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnbuscarActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="btnhoy">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="HOY"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnhoyActionPerformed"/>
-          </Events>
-        </Component>
-        <Component class="javax.swing.JButton" name="btnmes">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="MES"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnmesActionPerformed"/>
-          </Events>
-        </Component>
         <Component class="javax.swing.JLabel" name="jLabel7">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
@@ -359,6 +344,25 @@
             </Property>
             <Property name="text" type="java.lang.String" value="entregador"/>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JComboBox" name="cmbfecha">
+          <Properties>
+            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+              <StringArray count="4">
+                <StringItem index="0" value="Item 1"/>
+                <StringItem index="1" value="Item 2"/>
+                <StringItem index="2" value="Item 3"/>
+                <StringItem index="3" value="Item 4"/>
+              </StringArray>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="cmbfechaItemStateChanged"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmbfechaActionPerformed"/>
+          </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+          </AuxValues>
         </Component>
       </SubComponents>
     </Container>

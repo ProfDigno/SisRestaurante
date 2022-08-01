@@ -39,6 +39,8 @@ public class FrmEntregador_venta extends javax.swing.JInternalFrame {
     EvenConexion eveconn = new EvenConexion();
     EvenMensajeJoptionpane evemen = new EvenMensajeJoptionpane();
     cla_color_pelete clacolor= new cla_color_pelete();
+    private DAO_venta DAOven = new DAO_venta();
+    private String filtro_fecha;
     /**
      * Creates new form FrmZonaDelivery
      */
@@ -48,22 +50,41 @@ public class FrmEntregador_venta extends javax.swing.JInternalFrame {
         pcdao.actualizar_tabla_entregador(conn, tblentregador);
         txtfecha_desde.setText(evefec.getString_formato_fecha());
         txtfecha_hasta.setText(evefec.getString_formato_fecha());
+        evefec.cargar_combobox_intervalo_fecha(cmbfecha);
         color_formulario();
+        cargar_filtro_fecha(true);
     }
     void color_formulario(){
         panel_entregador.setBackground(clacolor.getColor_insertar_primario());
         panel_filtro.setBackground(clacolor.getColor_insertar_secundario());
     }
-    void seleccionar_tabla() {
+    private void cargar_filtro_fecha(boolean esIntervalo){
+        if(esIntervalo){
+            filtro_fecha=evefec.getIntervalo_fecha_combobox(cmbfecha, "v.fecha_inicio");
+        }else{
+        String fecdesde = evefec.getString_validar_fecha(txtfecha_desde.getText());
+        String fechasta = evefec.getString_validar_fecha(txtfecha_hasta.getText());
+        filtro_fecha="and date(v.fecha_inicio)>='" + fecdesde + "' and date(v.fecha_inicio)<='" + fechasta + "' ";
+        }
+    }
+    private void seleccionar_tabla_entregador() {
         int identregador = evejt.getInt_select_id(tblentregador);
         String nombre = evejt.getString_select(tblentregador, 1);
         lblentregador.setText(nombre);
-        String fecdesde = evefec.getString_validar_fecha(txtfecha_desde.getText());
-        String fechasta = evefec.getString_validar_fecha(txtfecha_hasta.getText());
-        pcdao.actualizar_tabla_suma_delivery(conn, tblentregador_venta, identregador, fecdesde, fechasta);
-        suma_venta_delivery(identregador, fecdesde, fechasta);
+//        pcdao.actualizar_tabla_suma_delivery(conn, tblentregador_venta, identregador, fecdesde, fechasta);
+        pcdao.actualizar_tabla_suma_delivery_fecha(conn, tblentregador_venta, identregador, filtro_fecha);
+        suma_venta_delivery(identregador, filtro_fecha);
     }
-
+//    private void seleccionar_tabla_entregador_fecha() {
+//        int identregador = evejt.getInt_select_id(tblentregador);
+//        String nombre = evejt.getString_select(tblentregador, 1);
+//        lblentregador.setText(nombre);
+////        String fecdesde = evefec.getString_validar_fecha(txtfecha_desde.getText());
+////        String fechasta = evefec.getString_validar_fecha(txtfecha_hasta.getText());
+//        String filtro=evefec.getIntervalo_fecha_combobox(cmbfecha, "v.fecha_inicio");
+//        pcdao.actualizar_tabla_suma_delivery_fecha(conn, tblentregador_venta, identregador, filtro);
+//        suma_venta_delivery(identregador,filtro);
+//    }
     void boton_hoy() {
         txtfecha_desde.setText(evefec.getString_formato_fecha());
         txtfecha_hasta.setText(evefec.getString_formato_fecha());
@@ -77,31 +98,32 @@ public class FrmEntregador_venta extends javax.swing.JInternalFrame {
     }
 
     void boton_buscar() {
-        if (!evejt.getBoolean_validar_select(tblentregador)) {
-            seleccionar_tabla();
+        if (tblentregador.getSelectedRow()>=0) {
+            seleccionar_tabla_entregador();
         }
     }
 
     void boton_imprimir() {
         if (!evejt.getBoolean_validar_select(tblentregador)) {
             int identregador = evejt.getInt_select_id(tblentregador);
-            String fecdesde = evefec.getString_validar_fecha(txtfecha_desde.getText());
-            String fechasta = evefec.getString_validar_fecha(txtfecha_hasta.getText());
-            pcdao.actualizar_tabla_suma_delivery(conn, tblentregador_venta, identregador, fecdesde, fechasta);
-            suma_venta_delivery(identregador, fecdesde, fechasta);
-            pcdao.imprimir_venta_delivery(conn, identregador, fecdesde, fechasta);
+//            String fecdesde = evefec.getString_validar_fecha(txtfecha_desde.getText());
+//            String fechasta = evefec.getString_validar_fecha(txtfecha_hasta.getText());
+//            pcdao.actualizar_tabla_suma_delivery(conn, tblentregador_venta, identregador, fecdesde, fechasta);
+            pcdao.actualizar_tabla_suma_delivery_fecha(conn, tblentregador_venta, identregador, filtro_fecha);
+            suma_venta_delivery(identregador,filtro_fecha);
+            pcdao.imprimir_venta_delivery(conn, identregador,filtro_fecha);
         }
     }
 
-    void suma_venta_delivery(int identregador, String fecdesde, String fechasta) {
+    void suma_venta_delivery(int identregador, String filtro) {
         String titulo = "caja_detalle_saldo";
-        String sql = "select count(*) as cantidad,sum(monto_venta) as monto_venta,"
-                + "sum(monto_delivery) as monto_delivery \n"
-                + "from venta "
-                + "where delivery=true "
-                + "and (estado='EMITIDO' or estado='TERMINADO') "
-                + "and fk_identregador=" + identregador + " "
-                + "and date(fecha_inicio)>='" + fecdesde + "' and date(fecha_inicio)<='" + fechasta + "' ";
+        String sql = "select count(*) as cantidad,sum((v.monto_venta_efectivo+v.monto_venta_tarjeta)) as monto_venta,"
+                + "sum(v.monto_delivery) as monto_delivery \n"
+                + "from venta  v \n"
+                + "where v.delivery=true \n"
+                + "and (v.estado='"+DAOven.getEstado_ven_EMITIDO()+"' or v.estado='"+DAOven.getEstado_ven_TERMINADO()+"') "
+                + "and v.fk_identregador=" + identregador + " "
+                + " " + filtro + "  ;";
         try {
             ResultSet rs = eveconn.getResulsetSQL(conn, sql, titulo);
             if (rs.next()) {
@@ -142,8 +164,6 @@ public class FrmEntregador_venta extends javax.swing.JInternalFrame {
         jLabel15 = new javax.swing.JLabel();
         txtfecha_hasta = new javax.swing.JTextField();
         btnbuscar = new javax.swing.JButton();
-        btnhoy = new javax.swing.JButton();
-        btnmes = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         jFmonto_venta = new javax.swing.JFormattedTextField();
         jLabel8 = new javax.swing.JLabel();
@@ -152,6 +172,7 @@ public class FrmEntregador_venta extends javax.swing.JInternalFrame {
         txtcantidad = new javax.swing.JTextField();
         btnimp_venta_deli = new javax.swing.JButton();
         lblentregador = new javax.swing.JLabel();
+        cmbfecha = new javax.swing.JComboBox<>();
 
         setClosable(true);
         setIconifiable(true);
@@ -255,20 +276,6 @@ public class FrmEntregador_venta extends javax.swing.JInternalFrame {
             }
         });
 
-        btnhoy.setText("HOY");
-        btnhoy.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnhoyActionPerformed(evt);
-            }
-        });
-
-        btnmes.setText("MES");
-        btnmes.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnmesActionPerformed(evt);
-            }
-        });
-
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel7.setText("TOTAL VENTA:");
 
@@ -299,6 +306,18 @@ public class FrmEntregador_venta extends javax.swing.JInternalFrame {
         lblentregador.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         lblentregador.setText("entregador");
 
+        cmbfecha.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbfecha.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cmbfechaItemStateChanged(evt);
+            }
+        });
+        cmbfecha.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbfechaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panel_filtroLayout = new javax.swing.GroupLayout(panel_filtro);
         panel_filtro.setLayout(panel_filtroLayout);
         panel_filtroLayout.setHorizontalGroup(
@@ -318,7 +337,10 @@ public class FrmEntregador_venta extends javax.swing.JInternalFrame {
                             .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(panel_filtroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jFmonto_venta, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(panel_filtroLayout.createSequentialGroup()
+                                .addComponent(jFmonto_venta, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(lblentregador, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jFmonto_delivery, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(panel_filtroLayout.createSequentialGroup()
                         .addContainerGap()
@@ -328,17 +350,13 @@ public class FrmEntregador_venta extends javax.swing.JInternalFrame {
                                 .addComponent(txtfecha_desde, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(21, 21, 21)
                                 .addGroup(panel_filtroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel15)
                                     .addGroup(panel_filtroLayout.createSequentialGroup()
                                         .addComponent(txtfecha_hasta, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(btnbuscar)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(btnhoy)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(btnmes)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(lblentregador, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(jLabel15)))))
+                                        .addComponent(cmbfecha, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 720, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -352,17 +370,17 @@ public class FrmEntregador_venta extends javax.swing.JInternalFrame {
                 .addGroup(panel_filtroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtfecha_desde, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtfecha_hasta, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnbuscar, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnhoy, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnmes, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblentregador, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_filtroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnbuscar)
+                        .addComponent(cmbfecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 363, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panel_filtroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnimp_venta_deli)
                     .addComponent(jLabel7)
-                    .addComponent(jFmonto_venta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jFmonto_venta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblentregador))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panel_filtroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
@@ -399,7 +417,7 @@ public class FrmEntregador_venta extends javax.swing.JInternalFrame {
 
     private void tblentregadorMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblentregadorMouseReleased
         // TODO add your handling code here:
-        seleccionar_tabla();
+        seleccionar_tabla_entregador();
     }//GEN-LAST:event_tblentregadorMouseReleased
 
     private void tblentregador_ventaMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblentregador_ventaMouseReleased
@@ -422,30 +440,32 @@ public class FrmEntregador_venta extends javax.swing.JInternalFrame {
 
     private void btnbuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnbuscarActionPerformed
         // TODO add your handling code here:
+        cargar_filtro_fecha(false);
         boton_buscar();
     }//GEN-LAST:event_btnbuscarActionPerformed
-
-    private void btnhoyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnhoyActionPerformed
-        // TODO add your handling code here:
-        boton_hoy();
-    }//GEN-LAST:event_btnhoyActionPerformed
-
-    private void btnmesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnmesActionPerformed
-        // TODO add your handling code here:
-        boton_mes();
-    }//GEN-LAST:event_btnmesActionPerformed
 
     private void btnimp_venta_deliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnimp_venta_deliActionPerformed
         // TODO add your handling code here:
         boton_imprimir();
     }//GEN-LAST:event_btnimp_venta_deliActionPerformed
 
+    private void cmbfechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbfechaActionPerformed
+        // TODO add your handling code here:
+//        cargar_filtro_fecha(true);
+//        boton_buscar();
+    }//GEN-LAST:event_cmbfechaActionPerformed
+
+    private void cmbfechaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbfechaItemStateChanged
+        // TODO add your handling code here:
+        cargar_filtro_fecha(true);
+        boton_buscar();
+    }//GEN-LAST:event_cmbfechaItemStateChanged
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnbuscar;
-    private javax.swing.JButton btnhoy;
     private javax.swing.JButton btnimp_venta_deli;
-    private javax.swing.JButton btnmes;
+    private javax.swing.JComboBox<String> cmbfecha;
     private javax.swing.JFormattedTextField jFmonto_delivery;
     private javax.swing.JFormattedTextField jFmonto_venta;
     private javax.swing.JLabel jLabel14;

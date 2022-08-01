@@ -72,7 +72,7 @@ public class DAO_producto_grupo {
             evemen.mensaje_error(e, sql_cargar + "\n" + pgru.toString(), titulo);
         }
     }
-    public void cargar_producto_grupo(Connection conn, producto_grupo pgru,int id) {
+    public void cargar_producto_grupo1(Connection conn, producto_grupo pgru,int id) {
         String titulo = "Cargar_producto_grupo";
         try {
             ResultSet rs = eveconn.getResulsetSQL(conn, sql_cargar + id, titulo);

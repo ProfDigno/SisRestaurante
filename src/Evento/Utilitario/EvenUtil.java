@@ -5,7 +5,7 @@
  */
 package Evento.Utilitario;
 
-import Config_JSON.json_imprimir_pos;
+import Config_JSON.json_array_imprimir_pos;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -17,7 +17,7 @@ import java.util.Random;
  * @author Digno
  */
 public class EvenUtil {
-    private static json_imprimir_pos jsprint=new json_imprimir_pos();
+    private static json_array_imprimir_pos jsprint=new json_array_imprimir_pos();
      public String getString_salto_de_linea(String descripcion) {
         String texto_saltado = "";
         for (int caracter = 1; caracter <= descripcion.length(); caracter++) {

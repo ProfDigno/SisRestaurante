@@ -167,6 +167,7 @@ public class EvenFecha {
         return ts;
     }
  public void cargar_combobox_intervalo_fecha(JComboBox combo) {
+        combo.removeAllItems();
         String fechas[] = {"HOY", "AYER",
             "ESTA SEMANA", "SEMANA  ANTERIOR",
             "ESTE MES", "MES ANTERIOR",

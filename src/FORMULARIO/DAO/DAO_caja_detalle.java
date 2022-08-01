@@ -29,12 +29,17 @@ public class DAO_caja_detalle {
     private String sql_insert = "INSERT INTO public.caja_detalle(\n"
             + "            idcaja_detalle, fecha_emision, descripcion, monto_venta_efectivo, monto_delivery, \n"
             + "            monto_gasto, monto_compra, monto_vale, id_origen, tabla_origen, \n"
-            + "            fk_idusuario,indice,equipo,cierre,monto_caja,monto_cierre,estado,monto_venta_tarjeta)\n"
+            + "            fk_idusuario,indice,equipo,cierre,monto_caja,monto_cierre,estado,monto_venta_tarjeta,"
+            + "            monto_venta_gtigo,monto_venta_gpersonal,monto_venta_transferencia,monto_venta_pix)\n"
             + "    VALUES (?, ?, ?, ?, ?, \n"
-            + "            ?, ?, ?, ?, ?,?,?,?,?,?,?,?,?);";
+            + "            ?, ?, ?, ?, ?,?,?,?,?,?,?,?,?,?,?,?,?);";
     private String sql_select="select date(fecha_emision) as fecha,"
                 + "TRIM(to_char(sum(monto_venta_efectivo),'999G999G999')) as v_efectivo,"
                 + "TRIM(to_char(sum(monto_venta_tarjeta),'999G999G999')) as v_tarjeta,"
+                + "TRIM(to_char(sum(monto_venta_gtigo),'999G999G999')) as v_tigo,"
+                + "TRIM(to_char(sum(monto_venta_gpersonal),'999G999G999')) as v_perso,"
+                + "TRIM(to_char(sum(monto_venta_transferencia),'999G999G999')) as v_transfer,"
+                + "TRIM(to_char(sum(monto_venta_pix),'999G999G999')) as v_pix,"
                 + "TRIM(to_char(sum(monto_delivery),'999G999G999')) as delivery,"
                 + "TRIM(to_char(sum(monto_compra),'999G999G999')) as compra,\n" 
                 + "TRIM(to_char(sum(monto_gasto),'999G999G999')) as gasto,"
@@ -42,7 +47,8 @@ public class DAO_caja_detalle {
                 + "from caja_detalle "
                 + "group by 1 order by 1 desc";
     private String sql_anular="update caja_detalle set descripcion=(descripcion||'-(ANULADO)'),"
-                + "monto_venta_efectivo=0,monto_venta_tarjeta=0,monto_delivery=0,monto_gasto=0,monto_vale=0,monto_compra=0,estado='ANULADO' "
+                + "monto_venta_efectivo=0,monto_venta_tarjeta=0,monto_delivery=0,monto_gasto=0,monto_vale=0,monto_compra=0,estado='ANULADO',"
+                + "monto_venta_gtigo=0,monto_venta_gpersonal=0,monto_venta_transferencia=0,monto_venta_pix=0 "
                 + "where tabla_origen=? and id_origen=?;";
     private String sql_update="update caja_detalle set fecha_emision=?,descripcion=?,"
                 + "monto_venta_efectivo=?,monto_delivery=?,monto_gasto=?,monto_compra=?,monto_vale=? "
@@ -78,6 +84,10 @@ public class DAO_caja_detalle {
             pst.setDouble(16,caja.getC16monto_cierre());
             pst.setString(17,caja.getC17estado());
             pst.setDouble(18,caja.getC18monto_venta_tarjeta());
+            pst.setDouble(19,caja.getC19monto_venta_gtigo());
+            pst.setDouble(20,caja.getC20monto_venta_gpersonal());
+            pst.setDouble(21,caja.getC21monto_venta_transferencia());
+            pst.setDouble(22,caja.getC22monto_venta_pix());
             pst.execute();
             pst.close();
             evemen.Imprimir_serial_sql(sql_insert + "\n" + caja.toString(), titulo);
@@ -149,6 +159,16 @@ public class DAO_caja_detalle {
     }
     public void actualizar_tabla_caja_detalle(Connection conn, JTable tblcaja_resumen) {
         eveconn.Select_cargar_jtable(conn, sql_select, tblcaja_resumen);
+        evejt.alinear_derecha_columna(tblcaja_resumen, 1);
+        evejt.alinear_derecha_columna(tblcaja_resumen, 2);
+        evejt.alinear_derecha_columna(tblcaja_resumen, 3);
+        evejt.alinear_derecha_columna(tblcaja_resumen, 4);
+        evejt.alinear_derecha_columna(tblcaja_resumen, 5);
+        evejt.alinear_derecha_columna(tblcaja_resumen, 6);
+        evejt.alinear_derecha_columna(tblcaja_resumen, 7);
+        evejt.alinear_derecha_columna(tblcaja_resumen, 8);
+        evejt.alinear_derecha_columna(tblcaja_resumen, 9);
+        evejt.alinear_derecha_columna(tblcaja_resumen, 10);
     }
 
     public void ancho_tabla_cliente(JTable tbltabla) {
@@ -157,7 +177,7 @@ public class DAO_caja_detalle {
     }
     public void actualizar_tabla_grafico_caja_detalle(Connection conn,JTable tblgrafico_lavado,String campo_fecha,String filtro_fecha) {
         String sql = "select "+campo_fecha+" as FECHA,\n"
-                + "TRIM(to_char(sum(monto_venta_efectivo+monto_venta_tarjeta),'999G999G999')) as ingreso,\n"
+                + "TRIM(to_char(sum(monto_venta_efectivo+monto_venta_tarjeta+monto_venta_gtigo+monto_venta_gpersonal+monto_venta_transferencia+monto_venta_pix),'999G999G999')) as ingreso,\n"
                 + "TRIM(to_char(sum(monto_gasto+monto_vale+monto_compra),'999G999G999')) as egreso \n"
                 + "from caja_detalle \n"
                 + "where  "+filtro_fecha
@@ -166,7 +186,7 @@ public class DAO_caja_detalle {
     }
     public void actualizar_tabla_grafico_caja_detalle_venta(Connection conn,JTable tblcaja_venta,String campo_fecha,String filtro_fecha) {
         String sql = "select "+campo_fecha+" as FECHA,count(*) as cant,\n"
-                + "TRIM(to_char(sum(monto_venta_efectivo+monto_venta_tarjeta),'999G999G999')) as venta\n"
+                + "TRIM(to_char(sum(monto_venta_efectivo+monto_venta_tarjeta+monto_venta_gtigo+monto_venta_gpersonal+monto_venta_transferencia+monto_venta_pix),'999G999G999')) as venta\n"
                 + "from caja_detalle \n"
                 + "where  monto_venta_efectivo>0 and "+filtro_fecha
                 + " group by 1 order by 1 asc";

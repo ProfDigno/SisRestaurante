@@ -8,7 +8,7 @@ import BASEDATO.LOCAL.ConnPostgres;
 import BASEDATO.EvenConexion;
 //import BASEDATO.SERVIDOR.ConnPostgres_SER;
 import CONFIGURACION.EvenDatosPc;
-import Config_JSON.json_config;
+//import Config_JSON.json_config;
 import Evento.Fecha.EvenFecha;
 import Evento.JTextField.EvenJTextField;
 import Evento.Jframe.EvenJFRAME;
@@ -42,7 +42,7 @@ public class FrmComandaCocina extends javax.swing.JFrame {
     control_vista covi=new control_vista();
     EvenMensajeJoptionpane evemen = new EvenMensajeJoptionpane();
     DAO_comanda coma = new DAO_comanda();
-     json_config JSconfig=new json_config();
+//     json_config JSconfig=new json_config();
     private List<JTextArea> textarea;
     private Timer tiempo;
     private int contador_tiempo = 0;
@@ -63,7 +63,7 @@ public class FrmComandaCocina extends javax.swing.JFrame {
         coma.color_campo_azul(txttiempo_azul);
         coma.color_campo_rosado(txttiempo_rosado);
         coma.color_campo_gris(txttiempo_gris);
-        lblmensaje.setText("LUEGO DE ("+JSconfig.getTiempo_max_emitido()+") MINUTOS LOS EMITIDOS PASAN A TERMINADO");
+        lblmensaje.setText("LUEGO DE ("+coma.getTiempo_max_emitido()+") MINUTOS LOS EMITIDOS PASAN A TERMINADO");
         iniciarTiempo();
     }
     void cargar_comanda(){

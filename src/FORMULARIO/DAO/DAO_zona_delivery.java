@@ -14,14 +14,16 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 
 /**
  *
  * @author Digno
  */
 public class DAO_zona_delivery {
+
     EvenConexion evconn = new EvenConexion();
-    EvenJtable evejt=new EvenJtable();
+    EvenJtable evejt = new EvenJtable();
     EvenMensajeJoptionpane evemen = new EvenMensajeJoptionpane();
     private String mensaje_insert = "ZONA GUARDADO CORRECTAMENTE";
     private String mensaje_update = "ZONA MODIFICADO CORECTAMENTE";
@@ -31,15 +33,17 @@ public class DAO_zona_delivery {
     private String sql_update = "UPDATE public.zona_delivery\n"
             + "   SET  nombre=?, delivery=?\n"
             + " WHERE idzona_delivery=?";
-    private String sql_select="select * from zona_delivery order by 2 asc";
-    private String sql_cargar="select nombre,delivery from zona_delivery where idzona_delivery=";
-    public void cargar_zona_delivery(zona_delivery zona,int id) {
+    private String sql_select = "select idzona_delivery as idz, nombre as zona, to_char(delivery,'999G999') as delivery "
+            + "from zona_delivery order by 2 asc;";
+    private String sql_cargar = "select nombre,delivery from zona_delivery where idzona_delivery=";
+
+    public void cargar_zona_delivery(zona_delivery zona, int id) {
         String titulo = "cargar_zona_delivery";
 //        int id=evejt.getInt_select_id(tabla);
-        Connection conn=ConnPostgres.getConnPosgres();
+        Connection conn = ConnPostgres.getConnPosgres();
         try {
-            ResultSet rs=evconn.getResulsetSQL(conn,sql_cargar+id, titulo);
-            if(rs.next()){
+            ResultSet rs = evconn.getResulsetSQL(conn, sql_cargar + id, titulo);
+            if (rs.next()) {
                 zona.setIdzona_delivery(id);
                 zona.setNombre(rs.getString("nombre"));
                 zona.setDelivery(rs.getDouble("delivery"));
@@ -48,6 +52,7 @@ public class DAO_zona_delivery {
             evemen.mensaje_error(e, sql_cargar + "\n" + zona.toString(), titulo);
         }
     }
+
     public void insertar_zona_delivery(Connection conn, zona_delivery zona) {
         zona.setIdzona_delivery(evconn.getInt_ultimoID_mas_uno(conn, zona.getTabla(), zona.getIdtabla()));
         String titulo = "insertar_zona_delivery";
@@ -65,6 +70,7 @@ public class DAO_zona_delivery {
             evemen.mensaje_error(e, sql_insert + "\n" + zona.toString(), titulo);
         }
     }
+
     public void insertar_zona_delivery(Connection connServi, int Idzona_delivery, String Nombre, double Delivery) {
         String titulo = "insertar_zona_delivery";
         String sql_insert = "INSERT INTO public.zona_delivery(\n"
@@ -99,13 +105,28 @@ public class DAO_zona_delivery {
             evemen.mensaje_error(e, sql_update + "\n" + zona.toString(), titulo);
         }
     }
-    public void actualizar_tabla_zona_delivery(Connection conn,JTable tbltabla){
+
+    public void actualizar_tabla_zona_delivery(Connection conn, JTable tbltabla) {
         evconn.Select_cargar_jtable(conn, sql_select, tbltabla);
         ancho_tabla_zona_delivery(tbltabla);
     }
-    public void ancho_tabla_zona_delivery(JTable tbltabla){
-        int Ancho[]={20,60,20};
+
+    public void actualizar_tabla_zona_delivery_buscar(Connection conn, JTable tbltabla, JTextField txttexto) {
+        if (txttexto.getText().trim().length() >= 0) {
+            String zona = txttexto.getText();
+            String sql = "select idzona_delivery as idz, nombre as zona, to_char(delivery,'999G999') as delivery "
+                    + "from zona_delivery "
+                    + "where nombre ilike'%" + zona + "%'"
+                    + " order by nombre asc;";
+            evconn.Select_cargar_jtable(conn, sql, tbltabla);
+            ancho_tabla_zona_delivery(tbltabla);
+        }
+
+    }
+
+    public void ancho_tabla_zona_delivery(JTable tbltabla) {
+        int Ancho[] = {10, 70, 20};
         evejt.setAnchoColumnaJtable(tbltabla, Ancho);
+        evejt.alinear_derecha_columna(tbltabla, 2);
     }
 }
-

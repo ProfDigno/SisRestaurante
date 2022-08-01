@@ -36,19 +36,21 @@ public class json_array_conexion {
     private static String basedato;
     private static String usuario;
     private static String password;
-    private static String MacAddress_maquina;
+//    private static String MacAddress_maquina;
+    private static String nombre_computador;
     private static String direc_dump;
     private static String direc_backup;
     private static String nombre_backup;
     private static String limite_dia_eliminar;
     private static String crear_backup;
     public void cargar_jsom_array() {
-         MacAddress_maquina=pcinf.getMacAddress();
+//         MacAddress_maquina=pcinf.getMacAddress();
+        nombre_computador=pcinf.getNombrePC();
         JSONParser parser = new JSONParser();
         try {
             Object obj_maquina = parser.parse(new FileReader(ruta_json));
             JSONObject jsonObject_maquina = (JSONObject) obj_maquina;
-            JSONArray Array_maquina = (JSONArray) jsonObject_maquina.get(MacAddress_maquina);
+            JSONArray Array_maquina = (JSONArray) jsonObject_maquina.get(nombre_computador);
             Iterator<String> iterator_maquina = Array_maquina.iterator();
             String datos_conexion = String.valueOf(iterator_maquina.next());
             System.out.println(datos_conexion);
@@ -65,7 +67,7 @@ public class json_array_conexion {
              nombre_backup = (String) jsonObject_conexion.get("nombre_backup");
              limite_dia_eliminar = (String) jsonObject_conexion.get("limite_dia_eliminar");
              crear_backup = (String) jsonObject_conexion.get("crear_backup");
-            System.out.println(MacAddress_maquina);
+            System.out.println(nombre_computador);
             System.out.println(nombre);
             System.out.println(localhost);
             System.out.println(port);
@@ -78,16 +80,16 @@ public class json_array_conexion {
             System.out.println(limite_dia_eliminar);
             System.out.println(crear_backup);
         } catch (Exception ex) {
-            System.err.println("Error: " + ex.toString()+"\nNombre Maquina:"+MacAddress_maquina);
-            JOptionPane.showMessageDialog(null, "Error: " + ex.toString()+"\nNombre Maquina:"+MacAddress_maquina);
-            if(evemen.MensajeGeneral_warning("DESEA ABRIR EL ARCHIVO PARA CAMBIAR EL MAC PARA ESTE EQUIPO","ABRIR JSON","ABRIR","CANCELAR")){
-                abrir_este_json();
+            System.err.println("Error: " + ex.toString()+"\nNombre Maquina:"+nombre_computador);
+            JOptionPane.showMessageDialog(null, "Error: " + ex.toString()+"\nNombre Maquina:"+nombre_computador);
+            if(evemen.MensajeGeneral_warning("DESEA ABRIR EL ARCHIVO PARA CAMBIAR EL NOMBRE PARA ESTE EQUIPO","ABRIR JSON","ABRIR","CANCELAR")){
+                abrir_este_json_array_conexion();
             }
         } finally {
 
         }
     }
-    public void abrir_este_json(){
+    public void abrir_este_json_array_conexion(){
         jsoncf.abrirArchivo(ruta_json);
     }
 
@@ -139,13 +141,13 @@ public class json_array_conexion {
         json_array_conexion.password = password;
     }
 
-    public static String getMacAddress_maquina() {
-        return MacAddress_maquina;
-    }
-
-    public static void setMacAddress_maquina(String MacAddress_maquina) {
-        json_array_conexion.MacAddress_maquina = MacAddress_maquina;
-    }
+//    public static String getMacAddress_maquina() {
+//        return MacAddress_maquina;
+//    }
+//
+//    public static void setMacAddress_maquina(String MacAddress_maquina) {
+//        json_array_conexion.MacAddress_maquina = MacAddress_maquina;
+//    }
 
     public static String getDirec_dump() {
         return direc_dump;
@@ -185,6 +187,14 @@ public class json_array_conexion {
 
     public static void setLimite_dia_eliminar(String limite_dia_eliminar) {
         json_array_conexion.limite_dia_eliminar = limite_dia_eliminar;
+    }
+
+    public static String getNombre_computador() {
+        return nombre_computador;
+    }
+
+    public static void setNombre_computador(String nombre_computador) {
+        json_array_conexion.nombre_computador = nombre_computador;
     }
 
 }

@@ -9,7 +9,7 @@ import BASEDATO.LOCAL.ConnPostgres;
 import BASEDATO.EvenConexion;
 //import BASEDATO.SERVIDOR.ConnPostgres_SER;
 import CONFIGURACION.EvenDatosPc;
-import Config_JSON.json_config;
+//import Config_JSON.json_config;
 import Evento.Fecha.EvenFecha;
 import Evento.JTextField.EvenJTextField;
 import Evento.Jframe.EvenJFRAME;
@@ -47,6 +47,15 @@ public class DAO_comanda {
     private Color color_nivel_4 = Color.GRAY;
     private Color color_nivel_5 = Color.GRAY;
     private Color color_nivel_6=  new Color(233, 48, 52);
+    private int tiempo_max_emitido=60;
+
+    public int getTiempo_max_emitido() {
+        return tiempo_max_emitido;
+    }
+
+    public void setTiempo_max_emitido(int tiempo_max_emitido) {
+        this.tiempo_max_emitido = tiempo_max_emitido;
+    }
 
     public void color_campo_amarillo(JTextField txttiempo_amarillo) {
         txttiempo_amarillo.setText(String.valueOf(tiempo_nivel_1));
@@ -98,7 +107,8 @@ public class DAO_comanda {
     BO_venta vBO = new BO_venta();
     EvenJTextField evejtf = new EvenJTextField();
     EvenMensajeJoptionpane evemen = new EvenMensajeJoptionpane();
-    json_config JSconfig=new json_config();
+    private DAO_venta DAOven = new DAO_venta();
+//    json_config JSconfig=new json_config();
 //    ConnPostgres_SER conPsSER = new ConnPostgres_SER();
     private List<JTextArea> textarea;
     private static boolean cargar_panel_comanda;
@@ -162,7 +172,8 @@ public class DAO_comanda {
 
     private void anular_venta_anulado_temp(Connection conn) {
         String titulo = "anular_venta_anulado_temp";
-        String sql_update = "update venta set estado='ANULADO' where estado='ANULADO_temp' ";
+        String sql_update = "update venta set estado='"+DAOven.getEstado_ven_ANULADO()+"' "
+                + "where estado='"+DAOven.getEstado_ven_ANULADO_temp()+"' ;";
         PreparedStatement pst = null;
         try {
             pst = conn.prepareStatement(sql_update);
@@ -198,11 +209,12 @@ public class DAO_comanda {
             String fecha = evefec.getString_formato_fecha();
             String sql = "select v.idventa,(to_char(v.fecha_inicio,'HH24:MI')) as hora,v.tipo_entrega,v.comanda,v.estado, \n"
                     + "(to_char(v.fecha_inicio,'ssss')) as tiempo,"
-                    + "(v.estado='ANULADO_temp') as anulado,v.indice,c.nombre as cliente,c.direccion \n "
+                    + "(v.estado='"+DAOven.getEstado_ven_ANULADO_temp()+"') as anulado,v.indice,c.nombre as cliente,c.direccion \n "
                     + "from venta v,cliente c \n"
                     + "where v.fk_idcliente=c.idcliente \n"
                     + "and (date(v.fecha_inicio)=(current_date))\n"
-                    + "and (v.estado='EMITIDO' or v.estado='ANULADO_temp' ) \n"
+                    + "and (v.estado='"+DAOven.getEstado_ven_EMITIDO()+"' "
+                    + "or v.estado='"+DAOven.getEstado_ven_ANULADO_temp()+"' ) \n"
                     + "and v.comanda!='nada'\n"
                     + "order by v.idventa desc;";
             try {
@@ -238,7 +250,7 @@ public class DAO_comanda {
     }
 
     private void pasar_a_terminado(Connection conn,int tiempo, int idventa) {
-        if (tiempo >= (JSconfig.getTiempo_max_emitido() * 60)) {
+        if (tiempo >= (getTiempo_max_emitido() * 60)) {
             ven.setC5estado("TERMINADO");
             ven.setC1idventa(idventa);
             vBO.update_estado_venta(conn, ven);

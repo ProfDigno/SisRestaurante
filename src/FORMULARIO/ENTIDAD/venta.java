@@ -101,12 +101,22 @@ public class venta {
     private String c16nombre_mesa;
     private String c17forma_pago;
     private double c18monto_venta_tarjeta;
+    private double c19monto_venta_total;
     private static String tabla;
     private static String idtabla;
     private static String campo_cliente_comanda;
     private static boolean venta_aux;
     private static int idventaGlobal;
+    private static int formaPagoGlobal;
     private static double monto_ventaGlobal;
+
+    public static int getFormaPagoGlobal() {
+        return formaPagoGlobal;
+    }
+
+    public static void setFormaPagoGlobal(int formaPagoGlobal) {
+        venta.formaPagoGlobal = formaPagoGlobal;
+    }
 
     public static boolean isVenta_aux() {
         return venta_aux;
@@ -249,6 +259,14 @@ public class venta {
 
     public static void setIdtabla(String idtabla) {
         venta.idtabla = idtabla;
+    }
+
+    public double getC19monto_venta_total() {
+        return c19monto_venta_total;
+    }
+
+    public void setC19monto_venta_total(double c19monto_venta_total) {
+        this.c19monto_venta_total = c19monto_venta_total;
     }
 
     /**

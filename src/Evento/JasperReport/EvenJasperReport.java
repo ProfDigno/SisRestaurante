@@ -51,9 +51,9 @@ public class EvenJasperReport {
         String titulo="imprimirjasper";
         try{
             JasperDesign jasperDesign = JRXmlLoader.load(direccion);
-            System.out.println("jasperDesign.getPageHeight():"+jasperDesign.getPageHeight());
+//            System.out.println("jasperDesign.getPageHeight():"+jasperDesign.getPageHeight());
             jasperDesign.setPageHeight(jasperDesign.getPageHeight()+PageHeight);
-            System.out.println("jasperDesign.getPageHeight():"+jasperDesign.getPageHeight()+" SUMADO");
+//            System.out.println("jasperDesign.getPageHeight():"+jasperDesign.getPageHeight()+" SUMADO");
             JRDesignQuery newQuery = new JRDesignQuery();
             newQuery.setText(sql);
             jasperDesign.setQuery(newQuery);

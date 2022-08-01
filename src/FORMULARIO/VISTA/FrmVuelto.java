@@ -279,25 +279,25 @@ public class FrmVuelto extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_txtpagadoKeyPressed
 
-    private void btn10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn10ActionPerformed
+    private void btn100ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn100ActionPerformed
         // TODO add your handling code here:
-        billete_vuelto("10000");
-    }//GEN-LAST:event_btn10ActionPerformed
-
-    private void btn20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn20ActionPerformed
-        // TODO add your handling code here:
-        billete_vuelto("20000");
-    }//GEN-LAST:event_btn20ActionPerformed
+        billete_vuelto("100000");
+    }//GEN-LAST:event_btn100ActionPerformed
 
     private void btn50ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn50ActionPerformed
         // TODO add your handling code here:
         billete_vuelto("50000");
     }//GEN-LAST:event_btn50ActionPerformed
 
-    private void btn100ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn100ActionPerformed
+    private void btn20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn20ActionPerformed
         // TODO add your handling code here:
-        billete_vuelto("100000");
-    }//GEN-LAST:event_btn100ActionPerformed
+        billete_vuelto("20000");
+    }//GEN-LAST:event_btn20ActionPerformed
+
+    private void btn10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn10ActionPerformed
+        // TODO add your handling code here:
+        billete_vuelto("10000");
+    }//GEN-LAST:event_btn10ActionPerformed
 
     /**
      * @param args the command line arguments

@@ -6,9 +6,11 @@
 package IMPRESORA_POS;
 
 import BASEDATO.EvenConexion;
-import Config_JSON.json_config;
-import Config_JSON.json_imprimir_pos;
+//import Config_JSON.json_config;
+import Config_JSON.json_array_imprimir_pos;
 import Evento.Mensaje.EvenMensajeJoptionpane;
+import FORMULARIO.DAO.DAO_empresa;
+import FORMULARIO.ENTIDAD.empresa;
 import br.com.adilson.util.Extenso;
 import br.com.adilson.util.PrinterMatrix;
 import java.io.FileInputStream;
@@ -30,15 +32,17 @@ public class PosImprimir_caja_cierre_vgrupo {
 
     EvenConexion eveconn = new EvenConexion();
     EvenMensajeJoptionpane evemen = new EvenMensajeJoptionpane();
-    private static json_config config = new json_config();
-    private static json_imprimir_pos jsprint=new json_imprimir_pos();
+//    private static json_config config = new json_config();
+    private static json_array_imprimir_pos jsprint=new json_array_imprimir_pos();
     ClaImpresoraPos pos = new ClaImpresoraPos();
+    private empresa ENTemp = new empresa();
+    private DAO_empresa DAOemp = new DAO_empresa();
     private static String v1_idcaja_cierre = "0";
     private static String v2_fecha_inicio = "0";
     private static String v3_fecha_fin = "0";
     private static String v4_estado = "0";
     private static String v6_monto = "0";
-    private static String tk_nombre_empresa = config.getNombre_sistema();
+    private static String tk_nombre_empresa;
     private static String tk_ruta_archivo = "ticket_caja_cierre_grupo.txt";
     private static int cantidad_fila=1000;
     private static String[] iv1_cantidad = new String[cantidad_fila];
@@ -213,6 +217,8 @@ String getString_venta_grupo_cantidad_total(Connection conn,String fk_idcaja_cie
     public void boton_imprimir_pos_VENTA_grupo(Connection conn, String fk_idcaja_cierre, String grupo,String nom_grupo) {
         this.nom_grupo=nom_grupo;
         cargar_datos_venta(conn, fk_idcaja_cierre, grupo);
+        DAOemp.cargar_empresa(conn, ENTemp, 1);
+        tk_nombre_empresa=ENTemp.getC4razon_social();
         crear_mensaje_textarea_y_confirmar();
     }
 }

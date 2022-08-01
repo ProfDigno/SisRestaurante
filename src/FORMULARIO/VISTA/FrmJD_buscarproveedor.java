@@ -245,7 +245,8 @@ EvenJFRAME evetbl = new EvenJFRAME();
 
     private void btnsalect_salirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsalect_salirActionPerformed
         // TODO add your handling code here:
-        this.dispose();
+        seleccionar_tabla();
+            this.dispose();
     }//GEN-LAST:event_btnsalect_salirActionPerformed
 
     private void txtnombreKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtnombreKeyReleased
@@ -254,7 +255,10 @@ EvenJFRAME evetbl = new EvenJFRAME();
 
     private void tblbuscar_clienteMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblbuscar_clienteMousePressed
         // TODO add your handling code here:
-        
+        if (evt.getClickCount() == 2) {
+            seleccionar_tabla();
+            this.dispose();
+        }
     }//GEN-LAST:event_tblbuscar_clienteMousePressed
 
     private void tblbuscar_clienteKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tblbuscar_clienteKeyPressed

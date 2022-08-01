@@ -1,68 +1,58 @@
                                         
- =========NOMBRE EMPRESA=========       
-          CODIGO:320                    
- INICIO:       2022-04-12 16:38         
- FIN:          2022-04-12 22:26         
- USUARIO:Cindy                          
+ =========QCHURRON=========             
+          CODIGO:1                      
+ INICIO:       2022-06-19 20:11         
+ FIN:          2022-06-21 01:24         
+ USUARIO:ADMINISTRADOR                  
  #=============================#        
- CAJA ABRIR:             0              
- TOTAL VENTA:            2,953,000      
+ CAJA ABRIR:             1,000          
+ TOTAL VENTA:            873,000        
  VENTA TARJETA:          0              
  ------Detalle Venta-----------         
- COMIDA:                 2,773,000      
- BEBIDA:                 45,000         
- DELIVERY:               135,000        
+ COMIDA:                 -9,000         
+ BEBIDA:                 758,000        
+ DELIVERY:               80,000         
  #=============================#        
  TOTAL GASTO:            0              
  TOTAL VALE:             0              
  TOTAL COMPRA:           0              
  #=============================#        
- SIS. TOTAL:             2,953,000      
- SIS. SIN DELIVERY:      2,818,000      
- CIERRE:                 2,818,000      
+ SIS. TOTAL:             874,000        
+ SIS. SIN DELIVERY:      794,000        
+ CIERRE:                 794,000        
  DIFERENCIA:             (0)            
  ------Venta Por Categoria-------       
-    24 X    PROMO                       
-    23 X    HB-CLASICA                  
-    15 X    PAPAS                       
-    14 X    HB-ESPECIAL                 
-    6 X     BEBIDAS                     
-    2 X     EXTRAS                      
+    19 X    ACAI                        
+    3 X     HAMBURGUESA                 
+    3 X     CHURROS                     
+    2 X     HOT DOG                     
                                         
  ------TOP 15 Mas Vendido-----          
-    12 X    (DOBLE)-2 CHESSE            
-    11 X    PAPA-TRADICIONAL            
-    8 X     (SIMPLE)-2 COSTLLAS+1 PAPA TRADICIONAL
-    7 X     (SIMPLE)-CLASICA            
-    5 X     (SIMPLE)-CHEESE BURGER      
-    4 X     (SIMPLE)-COSTILLA           
-    4 X     (SIMPLE)-SODA ESTEREO       
-    4 X     (SIMPLE)-3 chesse burger    
-    3 X     (SIMPLE)-LEGIAO URBANA      
-    3 X     500ML-COCA COLA             
-    2 X     Extra-PAN KETO              
-    2 X     PAPA-CATUPIRY Y BACON       
-    2 X     (DOBLE)-CHEESE BACON        
-    2 X     (DOBLE)-AC/DC               
-    1 X     PAPA-CON CHEDDAR            
+    13 X    - 500ML --TRADICIONAL       
+    3 X     - 300ML --NUTELLA           
+    2 X     UNI --ARTESANAL - N*1       
+    2 X     - 300ML --PURO LECHE        
+    2 X     --N*1 - TRADICIONAL         
+    1 X     UNI --ARTESANAL - N*4       
+    1 X     - 700ML --TRADICIONAL       
+    1 X     UNI --CANASTA- COMPLETA     
+    1 X     - SUPER --MITAD MITAD       
+    1 X     UNI --TORTA - 2 KG - CON TORTA
                                         
  ------ANULADOS-----                    
  IDV     CLIENTE            TOTAL       
- 11502 FERNANDO VERA        65,000      
- 11510 MARCELO MERELES      87,000      
- 11514 MARCELO MERELES      37,000      
- 11517 MAMA                 65,000      
- 11529 TERESA DEL PUERTO    120,000     
+ 13    ABIGAIL VILLAVERDE   20,000      
+ 15    Ocasional            37,000      
                                         
  ------DESCUENTO-----                   
  IDV     CLIENTE            DESCUENTO   
- 11506 TOMAS MORELATO       -11,000     
+ 6      NATALIA ATWE        -2,000      
+ 7     ADRIANA CESPEDES     -2,000      
+ 8     ALEJANDRO POZZO      -5,000      
                                         
- TOTAL:                     -11,000     
+ TOTAL:                     -9,000      
  #=============================#        
  INSUMO: INCLUYE MAYOR A TOP            
-    89 X    PAN BRIOCHE                 
-    123 X   CARNE                       
                                         
                                         
                                         

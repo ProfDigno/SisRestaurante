@@ -6,7 +6,9 @@
 package Evento.Jtable;
 
 import Evento.Mensaje.EvenMensajeJoptionpane;
+import FORMULARIO.ENTIDAD.item_venta;
 import java.awt.Color;
+import java.awt.event.KeyEvent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
@@ -25,6 +27,7 @@ import javax.swing.table.TableColumnModel;
 public class EvenJtable {
 
     EvenMensajeJoptionpane evmen = new EvenMensajeJoptionpane();
+    item_venta item = new item_venta();
 
     /**
      * Da el ancho de las columnas de una tabla se calcula si la tabla y el
@@ -126,7 +129,7 @@ public class EvenJtable {
                     System.out.println("error:" + e);
                     break;
                 }
-                if (ingrediente.equals("P") || ingrediente.equals("N") || ingrediente.equals("S")) {
+                if (ingrediente.equals(item.getTipo_producto()) || ingrediente.equals(item.getTipo_producto_stock()) || ingrediente.equals(item.getTipo_descontar())) {
                     break;
                 } else {
                     Detabla.removeRow(fila);
@@ -152,7 +155,7 @@ public class EvenJtable {
                     System.out.println("error:" + e);
 //                    break;
                 }
-                if (ingrediente.equals("D")) {
+                if (ingrediente.equals(item.getTipo_delivery())) {
                     Detabla.removeRow(row);
                     System.out.println("Eliminar delivery: " + row);
                 }
@@ -347,4 +350,27 @@ public class EvenJtable {
         }
     }
     // model.setValueAt(value, 1, 1);
+    public void ocultar_columna(JTable tabla, int columna) {
+        String tutulo = "ocultar_columna";
+        try {
+            tabla.getColumnModel().getColumn(columna).setMaxWidth(0);
+            tabla.getColumnModel().getColumn(columna).setMinWidth(0);
+            tabla.getTableHeader().getColumnModel().getColumn(columna).setMaxWidth(0);
+            tabla.getTableHeader().getColumnModel().getColumn(columna).setMinWidth(0);
+        } catch (Exception e) {
+            evmen.mensaje_error(e, tutulo);
+        }
+    }
+    public void seleccionar_tabla_flecha_abajo(KeyEvent evt,JTable tabla){
+        if (evt.getKeyCode() == KeyEvent.VK_DOWN) {
+            tabla.requestFocus();
+            tabla.changeSelection(0, 0, false, false);
+        }
+    }
+    public void seleccionar_tabla_primera_fila(JTable tabla){
+        if (tabla.getRowCount()>0) {
+            tabla.requestFocus();
+            tabla.changeSelection(0, 0, false, false);
+        }
+    }
 }

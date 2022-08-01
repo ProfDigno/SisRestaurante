@@ -56,6 +56,10 @@ public class caja_detalle {
     private double c16monto_cierre;
     private String c17estado;
     private double c18monto_venta_tarjeta;
+    private double c19monto_venta_gtigo;
+    private double c20monto_venta_gpersonal;
+    private double c21monto_venta_transferencia;
+    private double c22monto_venta_pix;
     private static String tabla;
     private static String idtabla;
 
@@ -187,6 +191,38 @@ public class caja_detalle {
     @Override
     public String toString() {
         return "caja_detalle{" + "c1idcaja_detalle=" + c1idcaja_detalle + ", c2fecha_emision=" + c2fecha_emision + ", c3descripcion=" + c3descripcion + ", c4monto_venta=" + c4monto_venta_efectivo + ", c5monto_delivery=" + c5monto_delivery + ", c6monto_gasto=" + c6monto_gasto + ", c7monto_compra=" + c7monto_compra + ", c8monto_vale=" + c8monto_vale + ", c9id_origen=" + c9id_origen + ", c10tabla_origen=" + c10tabla_origen + ", c11fk_idusuario=" + c11fk_idusuario + ", c12indice=" + c12indice + ", c13equipo=" + c13equipo + ", c14cierre=" + c14cierre + ", c15monto_caja=" + c15monto_caja + ", c16monto_cierre=" + c16monto_cierre + '}';
+    }
+
+    public double getC19monto_venta_gtigo() {
+        return c19monto_venta_gtigo;
+    }
+
+    public void setC19monto_venta_gtigo(double c19monto_venta_gtigo) {
+        this.c19monto_venta_gtigo = c19monto_venta_gtigo;
+    }
+
+    public double getC20monto_venta_gpersonal() {
+        return c20monto_venta_gpersonal;
+    }
+
+    public void setC20monto_venta_gpersonal(double c20monto_venta_gpersonal) {
+        this.c20monto_venta_gpersonal = c20monto_venta_gpersonal;
+    }
+
+    public double getC21monto_venta_transferencia() {
+        return c21monto_venta_transferencia;
+    }
+
+    public void setC21monto_venta_transferencia(double c21monto_venta_transferencia) {
+        this.c21monto_venta_transferencia = c21monto_venta_transferencia;
+    }
+
+    public double getC22monto_venta_pix() {
+        return c22monto_venta_pix;
+    }
+
+    public void setC22monto_venta_pix(double c22monto_venta_pix) {
+        this.c22monto_venta_pix = c22monto_venta_pix;
     }
 
     

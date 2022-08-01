@@ -80,7 +80,9 @@ public class EvenJTextField {
             txtcampo2.grabFocus();
         }
     }
-
+    public void convertir_a_mayuscula(JTextField txtcampo){
+        txtcampo.setText(txtcampo.getText().toUpperCase());
+    }
     public void seleccionar_lista(KeyEvent evt, JList Jlista) {
         if (evt.getKeyCode() == KeyEvent.VK_DOWN) {
             Jlista.requestFocus();

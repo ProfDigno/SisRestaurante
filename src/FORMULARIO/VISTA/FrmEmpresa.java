@@ -37,8 +37,8 @@ public class FrmEmpresa extends javax.swing.JInternalFrame {
     private EvenJtable evejt = new EvenJtable();
     private Connection conn = ConnPostgres.getConnPosgres();
     private empresa ENTemp = new empresa();
-    private BO_empresa BOemp = new BO_empresa();
     private DAO_empresa DAOemp = new DAO_empresa();
+    private BO_empresa BOemp = new BO_empresa();
     private usuario ENTusu = new usuario();
     private EvenMensajeJoptionpane evemen = new EvenMensajeJoptionpane();
     private cla_color_pelete clacolor = new cla_color_pelete();

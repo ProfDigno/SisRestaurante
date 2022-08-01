@@ -59,9 +59,9 @@ public class FrmRepVentaDetalle extends javax.swing.JInternalFrame {
         panel_buscarcliente.setBackground(clacolor.getColor_insertar_secundario());
     }
     void cargar_producto_grupo() {
-        pgDAO.cargar_producto_grupo(conn, pgru, 0);
+        pgDAO.cargar_producto_grupo1(conn, pgru, 1);
         jCgrupo_0.setText(pgru.getC2nombre());
-        pgDAO.cargar_producto_grupo(conn, pgru, 1);
+        pgDAO.cargar_producto_grupo1(conn, pgru, 2);
         jCgrupo_1.setText(pgru.getC2nombre());
     }
     String filtro_venta_todos() {

@@ -6,10 +6,12 @@
 package IMPRESORA_POS;
 
 import BASEDATO.EvenConexion;
-import Config_JSON.json_config;
-import Config_JSON.json_imprimir_pos;
+//import Config_JSON.json_config;
+import Config_JSON.json_array_imprimir_pos;
 import Evento.Mensaje.EvenMensajeJoptionpane;
+import FORMULARIO.DAO.DAO_empresa;
 import FORMULARIO.DAO.DAO_producto_grupo;
+import FORMULARIO.ENTIDAD.empresa;
 import FORMULARIO.ENTIDAD.producto_grupo;
 import br.com.adilson.util.Extenso;
 import br.com.adilson.util.PrinterMatrix;
@@ -34,13 +36,15 @@ public class PosImprimir_caja_cierre {
 
     EvenConexion eveconn = new EvenConexion();
     EvenMensajeJoptionpane evemen = new EvenMensajeJoptionpane();
-    private static json_config config = new json_config();
-    private static json_imprimir_pos jsprint = new json_imprimir_pos();
+//    private static json_config config = new json_config();
+    private static json_array_imprimir_pos jsprint = new json_array_imprimir_pos();
     ClaImpresoraPos pos = new ClaImpresoraPos();
     DAO_producto_grupo pgDAO = new DAO_producto_grupo();
     producto_grupo pgru = new producto_grupo();
+    private empresa ENTemp = new empresa();
+    private DAO_empresa DAOemp = new DAO_empresa();
     private static String tk_usuario = "digno";
-    private static String tk_nombre_empresa = config.getNombre_sistema();
+    private static String tk_nombre_empresa;
     private static String tk_ruta_archivo = "ticket_caja_cierre.txt";
     private static FileInputStream inputStream = null;
     private static String nombre_ticket = "-CIERRE";
@@ -361,9 +365,9 @@ public class PosImprimir_caja_cierre {
     }
 
     void cargar_producto_grupo(Connection conn) {
-        pgDAO.cargar_producto_grupo(conn, pgru, 0);
+        pgDAO.cargar_producto_grupo1(conn, pgru, 1);
         nom_venta_grupo0 = pgru.getC2nombre();
-        pgDAO.cargar_producto_grupo(conn, pgru, 1);
+        pgDAO.cargar_producto_grupo1(conn, pgru, 2);
         nom_venta_grupo1 = pgru.getC2nombre();
 
     }
@@ -372,7 +376,7 @@ public class PosImprimir_caja_cierre {
         String mensaje_impresora = "";
         String saltolinea = "\n";
         String tabular = "------->> ";
-        mensaje_impresora = mensaje_impresora + "=======" + config.getNombre_sistema() + nombre_ticket + "========" + saltolinea;
+        mensaje_impresora = mensaje_impresora + "=======" + tk_nombre_empresa + nombre_ticket + "========" + saltolinea;
         mensaje_impresora = mensaje_impresora + "CODIGO:" + tk_idcaja_cierre + saltolinea;
         mensaje_impresora = mensaje_impresora + "USUARIO:" + tk_usuario + saltolinea;
         mensaje_impresora = mensaje_impresora + "INICIO: " + tk_inicio + saltolinea;
@@ -406,7 +410,7 @@ public class PosImprimir_caja_cierre {
         int tempfila = 0;
         int totalfila = jsprint.getTt_fila_cc() + tk_iv_fila_cate + tk_iv_fila_top + tk_iv_fila_anulado + tk_iv_fila_descuento+tk_iip_fila;
         printer.setOutSize(totalfila, totalColumna);
-        printer.printTextWrap(1 + tempfila, 1, jsprint.getSep_inicio(), totalColumna, jsprint.getLinea_cabezera() + config.getNombre_sistema() + jsprint.getLinea_cabezera());
+        printer.printTextWrap(1 + tempfila, 1, jsprint.getSep_inicio(), totalColumna, jsprint.getLinea_cabezera() + tk_nombre_empresa + jsprint.getLinea_cabezera());
         printer.printTextWrap(2 + tempfila, 2, 10, totalColumna, "CODIGO:" + tk_idcaja_cierre);
         printer.printTextWrap(3 + tempfila, 3, jsprint.getSep_inicio(), totalColumna, "INICIO:");
         printer.printTextWrap(3 + tempfila, 3, jsprint.getSep_fecha(), totalColumna, tk_inicio);
@@ -532,6 +536,8 @@ public class PosImprimir_caja_cierre {
         cargar_datos_venta_anulada(conn, idcaja_cierre);
         cargar_datos_venta_descuento(conn, idcaja_cierre);
         cargar_datos_insumo(conn, idcaja_cierre);
+        DAOemp.cargar_empresa(conn, ENTemp, 1);
+        tk_nombre_empresa=ENTemp.getC4razon_social();
         crear_mensaje_textarea_y_confirmar();
     }
 }

@@ -38,15 +38,19 @@ public class DAO_venta {
     EvenJasperReport rep = new EvenJasperReport();
     venta ven = new venta();
 //    BO_venta bo_ven=new BO_venta();
+    public static String estado_ven_EMITIDO = "EMITIDO";
+    public static String estado_ven_ANULADO = "ANULADO";
+    public static String estado_ven_ANULADO_temp = "ANULADO_temp";
+    public static String estado_ven_TERMINADO = "TERMINADO";
     private String mensaje_insert = "VENTA GUARDADO CORRECTAMENTE";
     private String mensaje_update = "VENTA MODIFICADO CORECTAMENTE";
     private String sql_insert = "INSERT INTO public.venta(\n"
             + "            idventa, fecha_inicio, fecha_fin, tipo_entrega, estado, monto_venta_efectivo, \n"
             + "            monto_delivery, delivery, observacion, comanda, equipo, fk_idcliente, \n"
-            + "            fk_idusuario, fk_identregador,indice,nombre_mesa,forma_pago,monto_venta_tarjeta)\n"
+            + "            fk_idusuario, fk_identregador,indice,nombre_mesa,forma_pago,monto_venta_tarjeta,monto_venta_total)\n"
             + "    VALUES (?, ?, ?, ?, ?, ?, \n"
             + "            ?, ?, ?, ?, ?, ?, \n"
-            + "            ?, ?, ?, ?, ?, ?);";
+            + "            ?, ?, ?, ?, ?, ?,?);";
     String restadeHoraTerminado = " ((((date_part('hour', v.fecha_fin))*60)+(date_part('minute', v.fecha_fin))) - \n"
             + "(((date_part('hour', v.fecha_inicio))*60)+(date_part('minute', v.fecha_inicio)))) ";
     private String sql_update_estado = "UPDATE public.venta\n"
@@ -100,6 +104,7 @@ public class DAO_venta {
             pst.setString(16, ven.getC16nombre_mesa());
             pst.setString(17, ven.getC17forma_pago());
             pst.setDouble(18, ven.getC18monto_venta_tarjeta());
+            pst.setDouble(19, ven.getC19monto_venta_total());
             pst.execute();
             pst.close();
             evemen.Imprimir_serial_sql(sql_insert + "\n" + ven.toString(), titulo);
@@ -215,7 +220,7 @@ public class DAO_venta {
                 + "TRIM(to_char((v.monto_venta_efectivo),'999G999G999')) as v_efectivo,\n"
                 + "TRIM(to_char((v.monto_venta_tarjeta),'999G999G999')) as v_tarjeta,\n"
                 + "TRIM(to_char(v.monto_delivery,'999G999G999')) as delivery, \n"
-                + "TRIM(to_char((v.monto_venta_efectivo+v.monto_venta_tarjeta),'999G999G999')) as total\n"
+                + "TRIM(to_char((v.monto_venta_efectivo+v.monto_venta_tarjeta+v.monto_venta_total),'999G999G999')) as total\n"
                 + "from venta v,cliente c,entregador e\n"
                 + "where v.fk_idcliente=c.idcliente "
                 + "and v.fk_identregador=e.identregador\n"
@@ -259,6 +264,7 @@ public class DAO_venta {
     public void ancho_tabla_venta(JTable tblventa) {
         int Ancho[] = {6, 2, 10, 5, 7, 16, 8, 8,8, 7,6,6,6,6};
         evejt.setAnchoColumnaJtable(tblventa, Ancho);
+//        evejt.alinear_derecha_columna(tblventa, 10);
     }
 
     public void venta_terminado_hoy(Connection connLocal, Connection connServi) {
@@ -284,7 +290,7 @@ public class DAO_venta {
     public void imprimir_rep_venta_todos(Connection conn, String filtro) {
         String sql = "select v.idventa as idventa,to_char(v.fecha_inicio,'yyyy-MM-dd HH24:MI') as fecha,v.nombre_mesa as mesa,\n"
                 + "c.ruc as ruc,('('||c.idcliente||')'||c.nombre) as cliente,c.tipo,\n"
-                + "v.estado as estado,(v.monto_venta_efectivo+v.monto_venta_tarjeta) as monto,v.monto_delivery as delivery,u.usuario as usuario\n"
+                + "v.estado as estado,(v.monto_venta_efectivo+v.monto_venta_tarjeta+v.monto_venta_total) as monto,v.monto_delivery as delivery,u.usuario as usuario\n"
                 + "from venta v,cliente c,usuario u\n"
                 + "where v.fk_idcliente=c.idcliente\n"
                 + "and v.fk_idusuario=u.idusuario\n"
@@ -298,7 +304,7 @@ public class DAO_venta {
     public double getDouble_suma_venta(Connection conn, String campo, String filtro) {
         double sumaventa = 0;
         String titulo = "getDouble_suma_venta";
-        String sql = "select count(*) as cantidad,sum(v.monto_venta_efectivo+v.monto_venta_tarjeta) as sumaventa\n"
+        String sql = "select count(*) as cantidad,sum(v.monto_venta_efectivo+v.monto_venta_tarjeta+v.monto_venta_total) as sumaventa\n"
                 + "from venta v,cliente c,usuario u\n"
                 + "where v.fk_idcliente=c.idcliente\n"
                 + "and v.fk_idusuario=u.idusuario\n"
@@ -357,4 +363,21 @@ public class DAO_venta {
         }
         return sumaventa;
     }
+
+    public static String getEstado_ven_EMITIDO() {
+        return estado_ven_EMITIDO;
+    }
+
+    public static String getEstado_ven_ANULADO() {
+        return estado_ven_ANULADO;
+    }
+
+    public static String getEstado_ven_ANULADO_temp() {
+        return estado_ven_ANULADO_temp;
+    }
+
+    public static String getEstado_ven_TERMINADO() {
+        return estado_ven_TERMINADO;
+    }
+    
 }

@@ -17,6 +17,10 @@ public class EvenEstado {
     private static String forPago_Efectivo;
     private static String forPago_TarjetaDebito;
     private static String forPago_TarjetaCredito;
+    private static String forPago_gtigo;
+    private static String forPago_gpersonal;
+    private static String forPago_transferencia;
+    private static String forPago_pix;
     private static String mone_PYG;//Gs
     private static String mone_USD;//Dolar
     private static String mone_BRL;//R$
@@ -30,10 +34,46 @@ public class EvenEstado {
         setForPago_Efectivo("EFECTIVO");
         setForPago_TarjetaDebito("TARJETA_DEBITO");
         setForPago_TarjetaCredito("TARJETA_CREDITO");
+        setForPago_gtigo("GIRO_TIGO");
+        setForPago_gpersonal("GIRO_PERSONAL");
+        setForPago_transferencia("TRANSFERENCIA");
+        setForPago_pix("PIX");
         setMone_PYG("Gs");
         setMone_USD("Dolar");
         setMone_BRL("R$");
         setMone_ARS("peso");
+    }
+
+    public static String getForPago_gtigo() {
+        return forPago_gtigo;
+    }
+
+    public static void setForPago_gtigo(String forPago_gtigo) {
+        EvenEstado.forPago_gtigo = forPago_gtigo;
+    }
+
+    public static String getForPago_gpersonal() {
+        return forPago_gpersonal;
+    }
+
+    public static void setForPago_gpersonal(String forPago_gpersonal) {
+        EvenEstado.forPago_gpersonal = forPago_gpersonal;
+    }
+
+    public static String getForPago_transferencia() {
+        return forPago_transferencia;
+    }
+
+    public static void setForPago_transferencia(String forPago_transferencia) {
+        EvenEstado.forPago_transferencia = forPago_transferencia;
+    }
+
+    public static String getForPago_pix() {
+        return forPago_pix;
+    }
+
+    public static void setForPago_pix(String forPago_pix) {
+        EvenEstado.forPago_pix = forPago_pix;
     }
 
     public static String getMone_PYG() {

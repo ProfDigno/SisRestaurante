@@ -10,10 +10,11 @@ import BASEDATO.LOCAL.ConnPostgres;
 import BASEDATO.LOCAL.VariablesBD;
 import CONFIGURACION.ClaCorteAdmin;
 import Config_JSON.json_array_conexion;
-import Config_JSON.json_config;
+import Config_JSON.json_array_formulario;
+//import Config_JSON.json_config;
 import Config_JSON.json_config_json;
-import Config_JSON.json_crear_cliente;
-import Config_JSON.json_imprimir_pos;
+//import Config_JSON.json_crear_cliente;
+import Config_JSON.json_array_imprimir_pos;
 import Evento.Archivos.EvenArchivo;
 import Evento.Color.cla_color_pelete;
 import Evento.Fecha.EvenFecha;
@@ -50,7 +51,6 @@ public class FrmMenuRestaurante extends javax.swing.JFrame {
     Connection conn = null;
     Connection connSER = null;
     ConnPostgres conPs = new ConnPostgres();
-//    VariablesBD var = new VariablesBD();
     control_vista covi = new control_vista();
     EvenJFRAME evetbl = new EvenJFRAME();
     EvenFecha evefec = new EvenFecha();
@@ -66,32 +66,29 @@ public class FrmMenuRestaurante extends javax.swing.JFrame {
     caja_cierre cjcie = new caja_cierre();
     DAO_caja_cierre cjcie_dao = new DAO_caja_cierre();
     cla_color_pelete clacolor = new cla_color_pelete();
-    json_config jsconfig = new json_config();
-    json_crear_cliente jsCli = new json_crear_cliente();
-//    json_config_json jsconjs=new json_config_json();
     ClaCorteAdmin corte = new ClaCorteAdmin();
-//    json_crear_cliente jsCli=new json_crear_cliente();
-    json_imprimir_pos jsprint = new json_imprimir_pos();
+    json_array_imprimir_pos jsprint = new json_array_imprimir_pos();
+    json_array_formulario jsfrm=new json_array_formulario();
     private Timer tiempo;
     DAO_producto_grupo pgDAO = new DAO_producto_grupo();
     producto_grupo pgru = new producto_grupo();
     cliente clie = new cliente();
     json_array_conexion jscon=new json_array_conexion();
     EvenArchivo evearc=new EvenArchivo();
+    String version="3.4";
+    String fecha_corte="2022-12-30";
     void abrir_formulario() {
-//         jscon.cargar_jsom_array();
         conPs.ConnectDBpostgres(conn,false);
         conn = conPs.getConnPosgres();
         covi.setComanda_abierto(true);
-        jsconfig.cargar_jsom_configuracion();
         jsprint.cargar_jsom_imprimir_pos();
-        
+        jsfrm.cargar_jsom_array_formulario();
         this.setExtendedState(MAXIMIZED_BOTH);
         iniciarTiempo();
         habilitar_menu(false);
         codao.cargar_cotizacion(coti, 1);
-        corte.setFecha_corte("2022-12-30");
-        txtvercion.setText("V:" + jsconfig.getVersion());
+        corte.setFecha_corte(fecha_corte);
+        txtvercion.setText(version);
         jFdolar.setValue(coti.getDolar_guarani());
         jFreal.setValue(coti.getReal_guarani());
         iniciar_color();
@@ -102,9 +99,9 @@ public class FrmMenuRestaurante extends javax.swing.JFrame {
 //        evearc.eliminar_archivos_de_carpeta_fechalimite("backup\\");
     }
     void cargar_producto_grupo() {
-        pgDAO.cargar_producto_grupo(conn, pgru, 0);
+        pgDAO.cargar_producto_grupo1(conn, pgru, 1);
         pgru.setNom_grupo_0(pgru.getC2nombre());
-        pgDAO.cargar_producto_grupo(conn, pgru, 1);
+        pgDAO.cargar_producto_grupo1(conn, pgru, 2);
         pgru.setNom_grupo_1(pgru.getC2nombre());
     }
 
@@ -117,9 +114,9 @@ public class FrmMenuRestaurante extends javax.swing.JFrame {
     }
 
     void titulo_sistema(String servidor) {
-        String titulo = jsconfig.getNombre_sistema() + " V." + jsconfig.getVersion()
+        String titulo = jscon.getNombre() + " V." + version
                 + " BD: " + jscon.getLocalhost() + "/" + jscon.getPort() + "/" + jscon.getBasedato()
-                + " Fecha: " + jsconfig.getFecha_sis() + servidor + " /Dias:" + corte.getCant_dias();
+                + " Fecha: " + fecha_corte + servidor + " /Dias:" + corte.getCant_dias();
         this.setTitle(titulo);
     }
 
@@ -151,10 +148,10 @@ public class FrmMenuRestaurante extends javax.swing.JFrame {
         FrmMenuRestaurante.btncotizacion.setEnabled(blo);
     }
 
-    void crear_cliente_de_json() {
-        jsCli.leer_jsom_cliente();
-        System.out.println("Nombre:" + jsCli.getJs_nombre());
-    }
+//    void crear_cliente_de_json() {
+//        jsCli.leer_jsom_cliente();
+//        System.out.println("Nombre:" + jsCli.getJs_nombre());
+//    }
 
     void iniciarTiempo() {
         tiempo = new Timer();
@@ -267,7 +264,6 @@ public class FrmMenuRestaurante extends javax.swing.JFrame {
         btndelivery_venta = new javax.swing.JButton();
         btncajacerrar = new javax.swing.JButton();
         btncaja_cierre = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu_venta = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -301,7 +297,6 @@ public class FrmMenuRestaurante extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         jMenuItem15 = new javax.swing.JMenuItem();
         jMenuItem16 = new javax.swing.JMenuItem();
-        jMenuItem40 = new javax.swing.JMenuItem();
         jMenuItem17 = new javax.swing.JMenuItem();
         jMenuItem36 = new javax.swing.JMenuItem();
         jMenuItem37 = new javax.swing.JMenuItem();
@@ -326,6 +321,10 @@ public class FrmMenuRestaurante extends javax.swing.JFrame {
         jMenu4 = new javax.swing.JMenu();
         jMenuItem25 = new javax.swing.JMenuItem();
         jMenuItem26 = new javax.swing.JMenuItem();
+        jMenu8 = new javax.swing.JMenu();
+        jMenuItem40 = new javax.swing.JMenuItem();
+        jMenuItem42 = new javax.swing.JMenuItem();
+        jMenuItem43 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -536,13 +535,6 @@ public class FrmMenuRestaurante extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("JSON");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
         escritorio.setLayer(btncliente, javax.swing.JLayeredPane.DEFAULT_LAYER);
         escritorio.setLayer(btnproducto, javax.swing.JLayeredPane.DEFAULT_LAYER);
         escritorio.setLayer(btnventa, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -562,7 +554,6 @@ public class FrmMenuRestaurante extends javax.swing.JFrame {
         escritorio.setLayer(btndelivery_venta, javax.swing.JLayeredPane.DEFAULT_LAYER);
         escritorio.setLayer(btncajacerrar, javax.swing.JLayeredPane.DEFAULT_LAYER);
         escritorio.setLayer(btncaja_cierre, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        escritorio.setLayer(jButton1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout escritorioLayout = new javax.swing.GroupLayout(escritorio);
         escritorio.setLayout(escritorioLayout);
@@ -603,14 +594,12 @@ public class FrmMenuRestaurante extends javax.swing.JFrame {
                             .addComponent(txtvercion))
                         .addContainerGap(323, Short.MAX_VALUE))
                     .addGroup(escritorioLayout.createSequentialGroup()
-                        .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(lblusuario)
-                                .addComponent(btncambiar_usuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btncotizacion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btncajacerrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(jButton1))
+                        .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblusuario)
+                            .addComponent(btncambiar_usuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btncotizacion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btncajacerrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
         escritorioLayout.setVerticalGroup(
@@ -647,9 +636,7 @@ public class FrmMenuRestaurante extends javax.swing.JFrame {
                 .addComponent(btncotizacion)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btncajacerrar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
-                .addContainerGap(94, Short.MAX_VALUE))
+                .addContainerGap(123, Short.MAX_VALUE))
         );
 
         jMenu_venta.setText("VENTA");
@@ -854,14 +841,6 @@ public class FrmMenuRestaurante extends javax.swing.JFrame {
         });
         jMenu1.add(jMenuItem16);
 
-        jMenuItem40.setText("CONFIGURAR JSON CONEXION");
-        jMenuItem40.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem40ActionPerformed(evt);
-            }
-        });
-        jMenu1.add(jMenuItem40);
-
         jMenu_config.add(jMenu1);
 
         jMenuItem17.setText("COTIZACION");
@@ -1028,6 +1007,34 @@ public class FrmMenuRestaurante extends javax.swing.JFrame {
         jMenu_compra.add(jMenu4);
 
         jMenuBar1.add(jMenu_compra);
+
+        jMenu8.setText("JSON");
+
+        jMenuItem40.setText("CONFIGURAR JSON CONEXION");
+        jMenuItem40.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem40ActionPerformed(evt);
+            }
+        });
+        jMenu8.add(jMenuItem40);
+
+        jMenuItem42.setText("CONFIGURAR JSON IMPRIMIR POS");
+        jMenuItem42.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem42ActionPerformed(evt);
+            }
+        });
+        jMenu8.add(jMenuItem42);
+
+        jMenuItem43.setText("CONFIGURAR JSON FORMULARIO");
+        jMenuItem43.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem43ActionPerformed(evt);
+            }
+        });
+        jMenu8.add(jMenuItem43);
+
+        jMenuBar1.add(jMenu8);
 
         setJMenuBar(jMenuBar1);
 
@@ -1297,11 +1304,6 @@ public class FrmMenuRestaurante extends javax.swing.JFrame {
         evetbl.abrir_TablaJinternal(new FrmRepVentaProductoCaategoria());
     }//GEN-LAST:event_jMenuItem35ActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        boton_json();
-    }//GEN-LAST:event_jButton1ActionPerformed
-
     private void jMenuItem36ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem36ActionPerformed
         // TODO add your handling code here:
         evetbl.abrir_TablaJinternal(new FrmCajero());
@@ -1324,13 +1326,24 @@ public class FrmMenuRestaurante extends javax.swing.JFrame {
 
     private void jMenuItem40ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem40ActionPerformed
         // TODO add your handling code here:
-        jscon.abrir_este_json();
+        jscon.abrir_este_json_array_conexion();
     }//GEN-LAST:event_jMenuItem40ActionPerformed
 
     private void jMenuItem41ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem41ActionPerformed
         // TODO add your handling code here:
         evetbl.abrir_TablaJinternal(new FrmRestableserSistema());
     }//GEN-LAST:event_jMenuItem41ActionPerformed
+
+    private void jMenuItem42ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem42ActionPerformed
+        // TODO add your handling code here:
+        jsprint.abrir_este_json_array_imprimir_pos();
+//        jsconfig.abrir_este_json_configuracion();
+    }//GEN-LAST:event_jMenuItem42ActionPerformed
+
+    private void jMenuItem43ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem43ActionPerformed
+        // TODO add your handling code here:
+        jsfrm.abrir_este_json_array_formulario();
+    }//GEN-LAST:event_jMenuItem43ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1447,7 +1460,6 @@ public class FrmMenuRestaurante extends javax.swing.JFrame {
     public static javax.swing.JButton btnvale;
     public static javax.swing.JButton btnventa;
     public static javax.swing.JDesktopPane escritorio;
-    private javax.swing.JButton jButton1;
     public static javax.swing.JFormattedTextField jFdolar;
     public static javax.swing.JFormattedTextField jFreal;
     private javax.swing.JLabel jLabel1;
@@ -1459,6 +1471,7 @@ public class FrmMenuRestaurante extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenu jMenu6;
     private javax.swing.JMenu jMenu7;
+    private javax.swing.JMenu jMenu8;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;
@@ -1496,6 +1509,8 @@ public class FrmMenuRestaurante extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem40;
     private javax.swing.JMenuItem jMenuItem41;
+    private javax.swing.JMenuItem jMenuItem42;
+    private javax.swing.JMenuItem jMenuItem43;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;

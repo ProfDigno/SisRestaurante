@@ -6,9 +6,11 @@
 package IMPRESORA_POS;
 
 import BASEDATO.EvenConexion;
-import Config_JSON.json_config;
-import Config_JSON.json_imprimir_pos;
+//import Config_JSON.json_config;
+import Config_JSON.json_array_imprimir_pos;
 import Evento.Mensaje.EvenMensajeJoptionpane;
+import FORMULARIO.DAO.DAO_empresa;
+import FORMULARIO.ENTIDAD.empresa;
 import br.com.adilson.util.Extenso;
 import br.com.adilson.util.PrinterMatrix;
 import java.io.FileInputStream;
@@ -29,9 +31,11 @@ public class PosImprimir_comanda {
 
     EvenConexion eveconn = new EvenConexion();
     EvenMensajeJoptionpane evemen = new EvenMensajeJoptionpane();
-    private static json_config config = new json_config();
+//    private static json_config config = new json_config();
     ClaImpresoraPos pos = new ClaImpresoraPos();
-    private static json_imprimir_pos jsprint = new json_imprimir_pos();
+     private empresa ENTemp = new empresa();
+    private DAO_empresa DAOemp = new DAO_empresa();
+    private static json_array_imprimir_pos jsprint = new json_array_imprimir_pos();
     private static int limite_vector = 200;
     private static String v1_idventa = "0";
     private static String v2_fecha = "0";
@@ -41,7 +45,7 @@ public class PosImprimir_comanda {
     private static String v7_observacion = "0";
     private static String v9_usuario = "0";
     private static String v11_forma_pago = "pago";
-    private static String tk_nombre_empresa = config.getNombre_sistema();
+    private static String tk_nombre_empresa ;
     private static String tk_ruta_archivo = "ticket_comanda.txt";
     private static String[] iv1_cantidad = new String[limite_vector];
     private static String[] iv4_descripcion = new String[limite_vector];
@@ -123,7 +127,7 @@ public class PosImprimir_comanda {
         String mensaje_impresora = "";
         String saltolinea = "\n";
         String tabular = "\t";
-        mensaje_impresora = mensaje_impresora + "===============" + config.getNombre_sistema() + "================" + saltolinea;
+        mensaje_impresora = mensaje_impresora + "===============" + tk_nombre_empresa + "================" + saltolinea;
         mensaje_impresora = mensaje_impresora + v8_tipo_entrega + saltolinea;
         mensaje_impresora = mensaje_impresora + "USUARIO:" + v9_usuario + saltolinea;
         mensaje_impresora = mensaje_impresora + "VENTA:" + v1_idventa + saltolinea;
@@ -154,7 +158,7 @@ public class PosImprimir_comanda {
         int tempfila = 0;
         int totalfila = jsprint.getTt_fila_coman() + (tk_iv_fila + tk_iv_sum_fila + tk_iip_fila);
         printer.setOutSize(totalfila, totalColumna);
-        printer.printTextWrap(1 + tempfila, 1, jsprint.getSep_inicio(), totalColumna, jsprint.getLinea_cabezera() + config.getNombre_sistema() + jsprint.getLinea_cabezera());
+        printer.printTextWrap(1 + tempfila, 1, jsprint.getSep_inicio(), totalColumna, jsprint.getLinea_cabezera() + tk_nombre_empresa + jsprint.getLinea_cabezera());
         printer.printTextWrap(2 + tempfila, 2, jsprint.getSep_inicio(), totalColumna, v8_tipo_entrega);
         printer.printTextWrap(3 + tempfila, 3, jsprint.getSep_inicio(), totalColumna, "USUARIO:" + v9_usuario);
         printer.printTextWrap(4 + tempfila, 4, jsprint.getSep_inicio(), totalColumna, "VENTA:" + v1_idventa);
@@ -224,6 +228,8 @@ public class PosImprimir_comanda {
         if (jsprint.isPrint_comanda()) {
             cargar_datos_venta(conn, idventa);
             cargar_datos_insumo(conn, idventa);
+            DAOemp.cargar_empresa(conn, ENTemp, 1);
+            tk_nombre_empresa=ENTemp.getC4razon_social();
             crear_mensaje_textarea_y_confirmar();
         }
     }

@@ -159,6 +159,9 @@ public class FrmZonaDelivery extends javax.swing.JInternalFrame {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txtnombreKeyPressed(evt);
             }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtnombreKeyReleased(evt);
+            }
         });
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -358,6 +361,11 @@ public class FrmZonaDelivery extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         evejtf.soloNumero(evt);
     }//GEN-LAST:event_txtdeliveryKeyTyped
+
+    private void txtnombreKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtnombreKeyReleased
+        // TODO add your handling code here:
+        evejtf.convertir_a_mayuscula(txtnombre);
+    }//GEN-LAST:event_txtnombreKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

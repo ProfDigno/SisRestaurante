@@ -6,9 +6,11 @@
 package IMPRESORA_POS;
 
 import BASEDATO.EvenConexion;
-import Config_JSON.json_config;
-import Config_JSON.json_imprimir_pos;
+//import Config_JSON.json_config;
+import Config_JSON.json_array_imprimir_pos;
 import Evento.Mensaje.EvenMensajeJoptionpane;
+import FORMULARIO.DAO.DAO_empresa;
+import FORMULARIO.ENTIDAD.empresa;
 import br.com.adilson.util.Extenso;
 import br.com.adilson.util.PrinterMatrix;
 import java.io.FileInputStream;
@@ -30,8 +32,10 @@ public class PosImprimir_venta_mesa {
     ClaImpresoraPos clapos = new ClaImpresoraPos();
     EvenConexion eveconn = new EvenConexion();
     EvenMensajeJoptionpane evemen = new EvenMensajeJoptionpane();
-    private static json_config config=new json_config();
-    private static json_imprimir_pos jsprint=new json_imprimir_pos();
+//    private static json_config config=new json_config();
+    private empresa ENTemp = new empresa();
+    private DAO_empresa DAOemp = new DAO_empresa();
+    private static json_array_imprimir_pos jsprint=new json_array_imprimir_pos();
     private static String[] tk_iv_cantidad = new String[200];
     private static String[] tk_iv_descripcion = new String[200];
     private static String[] tk_iv_precioUni = new String[200];
@@ -45,6 +49,7 @@ public class PosImprimir_venta_mesa {
     private static String ven_cliente_mesa;
     private static String tk_ruta_archivo = "ticket_venta_mesa.txt";
     private static String nombre_ticket = "-VENTA MESA-";
+    private static String tk_nombre_empresa ;
     private static int tk_iv_sum_fila;
     void cargar_datos_venta_mesa(Connection conn, String idventa_mesa, String idmesa, int tipo) {
         String titulo = "cargar_datos_venta_mesa";
@@ -81,6 +86,8 @@ public class PosImprimir_venta_mesa {
 
         cargar_datos_venta_mesa(conn, idventa_mesa, idmesa, tipo);
         cargar_datos_itempedido(conn, idventa_mesa, idmesa, tipo);
+        DAOemp.cargar_empresa(conn, ENTemp, 1);
+        tk_nombre_empresa=ENTemp.getC4razon_social();
         buscar_error_impresion_pos();
     }
 
@@ -188,7 +195,7 @@ public class PosImprimir_venta_mesa {
         String mensaje_impresora = "";
         String saltolinea = "\n";
         String tabular = "\t";
-        mensaje_impresora = mensaje_impresora + "==##" + config.getNombre_sistema() + "##==" + saltolinea;
+        mensaje_impresora = mensaje_impresora + "==##" + tk_nombre_empresa + "##==" + saltolinea;
         mensaje_impresora = mensaje_impresora + "Cliente Oca: " + ven_cliente_mesa + saltolinea;
         mensaje_impresora = mensaje_impresora + "idventamesa: " + ven_idventa_mesa + saltolinea;
         mensaje_impresora = mensaje_impresora + "Fec:" + ven_fecha_cierre + saltolinea;

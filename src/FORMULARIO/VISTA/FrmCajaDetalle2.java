@@ -108,13 +108,19 @@ public class FrmCajaDetalle2 extends javax.swing.JInternalFrame {
         
     }
      void actualizar_caja_detalle_ventas(String fecha_emision, JTable tabla,JTextField txtcantidad,JFormattedTextField jftotalefectivo, JFormattedTextField jftotaltarjeta) {
-        String sql = "select c.id_origen,to_char(c.fecha_emision,'yyyy-MM-dd HH24:MI') as fecha_emision,c.descripcion,"
-                + "TRIM(to_char(c.monto_venta_efectivo,'999G999G999')) as v_efectivo,"
-                + "TRIM(to_char(c.monto_venta_tarjeta,'999G999G999')) as v_tarjeta,"
+
+         String sql = "select c.id_origen as idc,to_char(c.fecha_emision,'yyyy-MM-dd HH24:MI') as fecha_emision,c.descripcion,"
+                + "TRIM(to_char((c.monto_venta_efectivo),'999G999G999')) as v_efectivo,"
+                + "TRIM(to_char((c.monto_venta_tarjeta),'999G999G999')) as v_tarjeta,"
+                + "TRIM(to_char((c.monto_venta_gtigo),'999G999G999')) as v_tigo,"
+                + "TRIM(to_char((c.monto_venta_gpersonal),'999G999G999')) as v_perso,"
+                + "TRIM(to_char((c.monto_venta_transferencia),'999G999G999')) as v_transfer,"
+                + "TRIM(to_char((c.monto_venta_pix),'999G999G999')) as v_pix,"
                 + "c.estado,c.cierre as cie \n"
                 + " from caja_detalle c \n"
                 + "where date(c.fecha_emision)='"+fecha_emision+"'\n"
-                + "and (c.tabla_origen='VENTA_EFECTIVO' or c.tabla_origen='VENTA_TARJETA'  or c.tabla_origen='VENTA_COMBINADO') \n"
+                + "and (c.tabla_origen ilike'VENTA_%') \n"
+//                + "and (c.tabla_origen='VENTA_EFECTIVO' or c.tabla_origen='VENTA_TARJETA'  or c.tabla_origen='VENTA_COMBINADO') \n"
                 + "order by 1 desc";
         eveconn.Select_cargar_jtable(conn, sql, tabla);
          caja_detalle_cantidad_total_venta(fecha_emision,txtcantidad, jftotalefectivo, jftotaltarjeta);
@@ -126,14 +132,24 @@ public class FrmCajaDetalle2 extends javax.swing.JInternalFrame {
         evejt.setAnchoColumnaJtable(tabla, Ancho);
     }
     void anchotabla_caja_detalle_venta(JTable tabla) {
-        int Ancho[] = {8, 12,45, 10,10, 10,5};
+        int Ancho[] = {5, 12,30,8,8,8,8, 8,8, 7,3};
         evejt.setAnchoColumnaJtable(tabla, Ancho);
+        evejt.alinear_derecha_columna(tabla, 3);
+        evejt.alinear_derecha_columna(tabla, 4);
+        evejt.alinear_derecha_columna(tabla, 5);
+        evejt.alinear_derecha_columna(tabla, 6);
+        evejt.alinear_derecha_columna(tabla, 7);
+        evejt.alinear_derecha_columna(tabla, 8);
     }
     void caja_detalle_saldo(String fecha_emision) {
         String titulo="caja_detalle_saldo";
-        String sql = "select sum(monto_venta_efectivo+monto_venta_tarjeta) as ingreso,sum(monto_compra+monto_gasto+monto_vale) as egreso, \n"
-                + "sum((monto_venta_efectivo+monto_venta_tarjeta)-(monto_compra+monto_gasto+monto_vale)) as saldo\n"
-                + "from caja_detalle where date(fecha_emision)='"+fecha_emision+"'";
+        String sql = "select sum(c.monto_venta_efectivo+c.monto_venta_tarjeta+c.monto_venta_gtigo+"
+                 + "c.monto_venta_gpersonal+c.monto_venta_transferencia+c.monto_venta_pix) as ingreso,"
+                + "sum(c.monto_compra+c.monto_gasto+c.monto_vale) as egreso, \n"
+                + "sum((c.monto_venta_efectivo+c.monto_venta_tarjeta+c.monto_venta_gtigo+"
+                 + "c.monto_venta_gpersonal+c.monto_venta_transferencia+c.monto_venta_pix)-"
+                + "(c.monto_compra+c.monto_gasto+c.monto_vale)) as saldo\n"
+                + "from caja_detalle c where date(c.fecha_emision)='"+fecha_emision+"'";
         try {
             ResultSet rs = eveconn.getResulsetSQL(conn, sql, titulo);
             if (rs.next()) {
@@ -178,7 +194,8 @@ public class FrmCajaDetalle2 extends javax.swing.JInternalFrame {
                 + "sum(c.monto_venta_tarjeta) as v_tarjeta "
                 + " from caja_detalle c \n"
                 + "where date(c.fecha_emision)='"+fecha_emision+"'\n"
-                + "and (c.tabla_origen='VENTA_EFECTIVO' or c.tabla_origen='VENTA_TARJETA' or c.tabla_origen='VENTA_COMBINADO')";
+                + "and (c.tabla_origen ilike'VENTA_%');";
+//                + "and (c.tabla_origen='VENTA_EFECTIVO' or c.tabla_origen='VENTA_TARJETA' or c.tabla_origen='VENTA_COMBINADO')";
         try {
             ResultSet rs = eveconn.getResulsetSQL(conn, sql, titulo);
             if (rs.next()) {

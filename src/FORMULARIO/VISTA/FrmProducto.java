@@ -153,10 +153,10 @@ public class FrmProducto extends javax.swing.JInternalFrame {
         ENTpro.setP12fk_idproducto_categoria(fk_idproducto_categoria);
         ENTpro.setP13fk_idproducto_unidad(fk_idproducto_unidad);
         if (jRgrupo_0.isSelected()) {
-            ENTpro.setP14fk_idproducto_grupo(0);
+            ENTpro.setP14fk_idproducto_grupo(1);
         }
         if (jRgrupo_1.isSelected()) {
-            ENTpro.setP14fk_idproducto_grupo(1);
+            ENTpro.setP14fk_idproducto_grupo(2);
         }
         ENTpro.setP15fk_idproducto_cuenta(fk_idproducto_cuenta);
         ENTpro.setP16iva(valor_iva());
@@ -230,12 +230,12 @@ private int valor_iva(){
         } else {
             producto_sin_ingrediente();
         }
-        if (ENTpro.getP14fk_idproducto_grupo() == 0) {
+        if (ENTpro.getP14fk_idproducto_grupo() == 1) {
             jRgrupo_0.setSelected(true);
             jRgrupo_1.setSelected(false);
             System.out.println("grupo 0");
         }
-        if (ENTpro.getP14fk_idproducto_grupo() == 1) {
+        if (ENTpro.getP14fk_idproducto_grupo() == 2) {
             jRgrupo_0.setSelected(false);
             jRgrupo_1.setSelected(true);
             System.out.println("grupo 1");
@@ -269,9 +269,9 @@ private int valor_iva(){
     }
 
     void cargar_producto_grupo() {
-        pgDAO.cargar_producto_grupo(conn, pgru, 0);
+        pgDAO.cargar_producto_grupo1(conn, pgru, 1);
         jRgrupo_0.setText(pgru.getC2nombre());
-        pgDAO.cargar_producto_grupo(conn, pgru, 1);
+        pgDAO.cargar_producto_grupo1(conn, pgru, 2);
         jRgrupo_1.setText(pgru.getC2nombre());
     }
 
